@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://cwxoxvf0nnqla"]
+
+[ext_resource type="Script" uid="uid://yb7f6ngifhq1" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://p3sh0bq5of70" path="res://scripts/health_bar.gd" id="2_hbar"]
+[ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="3_cam"]
+[ext_resource type="PackedScene" uid="uid://cmppiquxqyap6" path="res://prefabs/player_warrior.tscn" id="4_war"]
+[ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="5_wiz"]
+[ext_resource type="PackedScene" uid="uid://dhinqg56j8sjl" path="res://prefabs/orc.tscn" id="6_f74lx"]
+
+[node name="house" type="Node2D" unique_id=572614891]
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=665861820]
+script = ExtResource("1_hud")
+
+[node name="lifeplayer1" type="Control" parent="HUD" unique_id=450873584]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 200.0
+offset_top = 2.0
+offset_right = 320.0
+offset_bottom = 12.0
+mouse_filter = 2
+script = ExtResource("2_hbar")
+
+[node name="LabelPlayer" type="Label" parent="HUD/lifeplayer1" unique_id=111111101]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "P1"
+vertical_alignment = 1
+
+[node name="BarBackground" type="ColorRect" parent="HUD/lifeplayer1" unique_id=111111102]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+
+[node name="BarFill" type="ColorRect" parent="HUD/lifeplayer1/BarBackground" unique_id=111111103]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 47.0
+offset_bottom = 5.0
+mouse_filter = 2
+color = Color(0.41960785, 0.7490196, 0.34901962, 1)
+
+[node name="LabelPercent" type="Label" parent="HUD/lifeplayer1" unique_id=111111104]
+layout_mode = 0
+offset_left = 70.0
+offset_right = 120.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "100%"
+vertical_alignment = 1
+
+[node name="lifeplayer2" type="Control" parent="HUD" unique_id=694780753]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 200.0
+offset_top = 12.0
+offset_right = 320.0
+offset_bottom = 22.0
+mouse_filter = 2
+script = ExtResource("2_hbar")
+
+[node name="LabelPlayer" type="Label" parent="HUD/lifeplayer2" unique_id=111111201]
+layout_mode = 0
+offset_right = 16.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "P2"
+vertical_alignment = 1
+
+[node name="BarBackground" type="ColorRect" parent="HUD/lifeplayer2" unique_id=111111202]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+
+[node name="BarFill" type="ColorRect" parent="HUD/lifeplayer2/BarBackground" unique_id=111111203]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 47.0
+offset_bottom = 5.0
+mouse_filter = 2
+color = Color(0.41960785, 0.7490196, 0.34901962, 1)
+
+[node name="LabelPercent" type="Label" parent="HUD/lifeplayer2" unique_id=111111204]
+layout_mode = 0
+offset_left = 70.0
+offset_right = 120.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "100%"
+vertical_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=619162892]
+position = Vector2(160, 83)
+zoom = Vector2(2, 2)
+script = ExtResource("3_cam")
+smooth_speed = 10.0
+max_player_distance = 150.0
+
+[node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("4_war")]
+position = Vector2(106, 86)
+
+[node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("5_wiz")]
+position = Vector2(185, 87)
+
+[node name="orc" parent="." unique_id=304333733 instance=ExtResource("6_f74lx")]
+position = Vector2(209, 83)

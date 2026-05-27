@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bproj001"]
+
+[ext_resource type="Script" uid="uid://dtfhwn3kdk6vd" path="res://scripts/projectile.gd" id="1_proj"]
+[ext_resource type="Texture2D" uid="uid://byabr1qxs60j1" path="res://sprites/Guns.png" id="2_how8d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_proj"]
+radius = 2.0
+
+[node name="Projectile" type="Area2D" unique_id=490058675]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_proj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1912204518]
+visible = false
+shape = SubResource("CircleShape2D_proj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1382179115]
+modulate = Color(0.13333334, 0.011764706, 0.9607843, 1)
+texture = ExtResource("2_how8d")
+region_enabled = true
+region_rect = Rect2(56.989357, 62.951065, 4.077118, 4.1171646)

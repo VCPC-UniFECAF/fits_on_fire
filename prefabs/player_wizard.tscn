@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://c73ekur8losib"]
+
+[ext_resource type="Script" uid="uid://b2s1rscektc3k" path="res://scripts/wizard.gd" id="1_wiz"]
+[ext_resource type="Texture2D" uid="uid://0wvmkuh3j8ph" path="res://sprites/Characters/wizard/Group 5.png" id="2_tex"]
+[ext_resource type="Script" uid="uid://jhxcolhdrcgo" path="res://scripts/wand.gd" id="2_wand"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle"]
+atlas = ExtResource("2_tex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7bhp"]
+atlas = ExtResource("2_tex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nw03b"]
+atlas = ExtResource("2_tex")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lsqi"]
+atlas = ExtResource("2_tex")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvdfj"]
+atlas = ExtResource("2_tex")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8t24c"]
+atlas = ExtResource("2_tex")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5lsg"]
+atlas = ExtResource("2_tex")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wiz"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": false,
+"name": &"attack_heavy",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": false,
+"name": &"attack_light",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w7bhp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nw03b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lsqi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvdfj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8t24c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5lsg")
+}],
+"loop": true,
+"name": &"side",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wiz"]
+radius = 6.0
+height = 18.0
+
+[node name="PlayerWizard" type="CharacterBody2D" unique_id=1739035420 groups=["player"]]
+collision_mask = 3
+script = ExtResource("1_wiz")
+player_id = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=152763092]
+position = Vector2(4.7683716e-07, 0)
+scale = Vector2(0.56249994, 0.56249994)
+sprite_frames = SubResource("SpriteFrames_wiz")
+animation = &"side"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1731426044]
+shape = SubResource("CapsuleShape2D_wiz")
+
+[node name="wand" type="Node2D" parent="." unique_id=889075565]
+position = Vector2(8, 0)
+script = ExtResource("2_wand")
