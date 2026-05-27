@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=3 uid="uid://csw6pmwos7ma2"]
+
+[ext_resource type="Script" path="res://scripts/wise.gd" id="1_wise"]
+[ext_resource type="Texture2D" uid="uid://0wvmkuh3j8ph" path="res://sprites/Characters/wizard/Group 5.png" id="2_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yh5q4"]
+atlas = ExtResource("2_tex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cctg0"]
+atlas = ExtResource("2_tex")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gm8bw"]
+atlas = ExtResource("2_tex")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hxul"]
+atlas = ExtResource("2_tex")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljeqx"]
+atlas = ExtResource("2_tex")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrpvm"]
+atlas = ExtResource("2_tex")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0y0xw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yh5q4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cctg0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gm8bw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hxul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljeqx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrpvm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t84gx"]
+radius = 18.0
+
+[node name="wise" type="Area2D"]
+collision_mask = 1
+script = ExtResource("1_wise")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_0y0xw")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t84gx")
+
+[node name="PromptLabel" type="Label" parent="."]
+visible = false
+offset_left = -50.0
+offset_top = -36.0
+offset_right = 50.0
+offset_bottom = -24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 8
+text = "▲ Interagir"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DialogCanvas" type="CanvasLayer" parent="."]
+visible = false
+layer = 10
+
+[node name="DialogRoot" type="Control" parent="DialogCanvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="DialogCanvas/DialogRoot"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -108.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ChatLog" type="RichTextLabel" parent="DialogCanvas/DialogRoot/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+scroll_following = true
+theme_override_font_sizes/normal_font_size = 8
+fit_content = false
+
+[node name="PlayerInput" type="LineEdit" parent="DialogCanvas/DialogRoot/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -22.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 8
+placeholder_text = "Digite e Enter..."
+clear_button_enabled = true
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]

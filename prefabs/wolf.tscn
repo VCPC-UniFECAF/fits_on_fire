@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://com4mxrdnmdeb"]
+
+[ext_resource type="Script" uid="uid://dxoxeg0p6w2jq" path="res://scripts/wolf.gd" id="1_wolf"]
+[ext_resource type="Texture2D" uid="uid://dme76l65fxi56" path="res://sprites/Enemies/humanwolf/wolf.png" id="2_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wolf"]
+atlas = ExtResource("2_tex")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wmcfj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wolf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wolf")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wolf")
+}],
+"loop": false,
+"name": &"slash",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 12.0
+height = 34.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sword"]
+size = Vector2(22, 14)
+
+[node name="wolf" type="Area2D" unique_id=1712616006 groups=["enemy"]]
+collision_layer = 2
+script = ExtResource("1_wolf")
+knockback_distance = 10.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=546465672]
+sprite_frames = SubResource("SpriteFrames_wmcfj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=435069299]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="SwordHitbox" type="Area2D" parent="." unique_id=1776541287]
+collision_layer = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=1835814102]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_sword")

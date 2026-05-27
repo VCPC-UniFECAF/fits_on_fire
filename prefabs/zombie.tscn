@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://qyniyirbenwr"]
+
+[ext_resource type="Script" uid="uid://wdlf3woargk6" path="res://scripts/zombie.gd" id="1_zombie"]
+[ext_resource type="Texture2D" uid="uid://cwapd2yqqebcc" path="res://sprites/Enemies/zombie/zombies.png" id="2_vlph1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kewk0"]
+atlas = ExtResource("2_vlph1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2cjbq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kewk0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kewk0")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_chjal"]
+radius = 11.0
+
+[node name="zombie" type="Area2D" unique_id=336572606 groups=["enemy"]]
+collision_layer = 2
+script = ExtResource("1_zombie")
+knockback_distance = 8.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2045162657]
+sprite_frames = SubResource("SpriteFrames_2cjbq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1073185151]
+shape = SubResource("CapsuleShape2D_chjal")

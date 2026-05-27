@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://dy6hiio5asvgp"]
+
+[ext_resource type="Script" uid="uid://txs0lcngr0p0" path="res://scripts/dragon_boss.gd" id="1_dragon"]
+[ext_resource type="Texture2D" uid="uid://cfj8ed6ccow1m" path="res://sprites/dragão_teste/dragão_teste.png" id="3_2tr5q"]
+[ext_resource type="Texture2D" uid="uid://cb808csovfsn8" path="res://sprites/dragão_teste/Dragão_idle/idle.png" id="3_qtb2k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2tr5q"]
+atlas = ExtResource("3_2tr5q")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkcip"]
+atlas = ExtResource("3_2tr5q")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scauy"]
+atlas = ExtResource("3_qtb2k")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0bw5"]
+atlas = ExtResource("3_qtb2k")
+region = Rect2(180, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_phdmq"]
+atlas = ExtResource("3_qtb2k")
+region = Rect2(360, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7phih"]
+atlas = ExtResource("3_qtb2k")
+region = Rect2(540, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwfmx"]
+atlas = ExtResource("3_qtb2k")
+region = Rect2(720, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfp52"]
+atlas = ExtResource("3_2tr5q")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj8gd"]
+atlas = ExtResource("3_2tr5q")
+region = Rect2(0, 0, 180, 180)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dragon"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2tr5q")
+}],
+"loop": false,
+"name": &"claw",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vkcip")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scauy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0bw5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_phdmq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7phih")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mwfmx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfp52")
+}],
+"loop": false,
+"name": &"tail",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj8gd")
+}],
+"loop": false,
+"name": &"wing",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hurt"]
+radius = 20.0
+height = 50.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_claw"]
+size = Vector2(50, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tail"]
+size = Vector2(35, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wing"]
+size = Vector2(70, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fire"]
+size = Vector2(120, 35)
+
+[node name="DragonBoss" type="Node2D" unique_id=1739492798 groups=["boss", "enemy"]]
+script = ExtResource("1_dragon")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=337507954]
+scale = Vector2(0.2777778, 0.2777778)
+sprite_frames = SubResource("SpriteFrames_dragon")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.8480582
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=21771569]
+visible = false
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=968180346]
+shape = SubResource("CapsuleShape2D_hurt")
+
+[node name="ClawHitbox" type="Area2D" parent="." unique_id=509285698]
+visible = false
+collision_layer = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClawHitbox" unique_id=1162431997]
+position = Vector2(55, 0)
+shape = SubResource("RectangleShape2D_claw")
+
+[node name="TailHitbox" type="Area2D" parent="." unique_id=1074781598]
+visible = false
+collision_layer = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TailHitbox" unique_id=310123373]
+position = Vector2(-20, 10)
+shape = SubResource("RectangleShape2D_tail")
+
+[node name="WingHitbox" type="Area2D" parent="." unique_id=1797172291]
+visible = false
+collision_layer = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WingHitbox" unique_id=1469230868]
+position = Vector2(45, -15)
+shape = SubResource("RectangleShape2D_wing")
+
+[node name="FireHitbox" type="Area2D" parent="." unique_id=1649235890]
+visible = false
+collision_layer = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FireHitbox" unique_id=1752263836]
+position = Vector2(90, 0)
+shape = SubResource("RectangleShape2D_fire")
