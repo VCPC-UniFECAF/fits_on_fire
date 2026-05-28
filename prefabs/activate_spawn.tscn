@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://chv4t5k5uhfc7"]
+
+[ext_resource type="Script" path="res://scripts/activate_spawn.gd" id="1_activate"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(32, 32)
+
+[node name="ActivateSpawn" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+script = ExtResource("1_activate")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_trigger")

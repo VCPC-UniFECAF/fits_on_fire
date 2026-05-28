@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ci4wekdc6pi7y"]
+
+[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="1_spawner"]
+
+[node name="EnemySpawner" type="Node2D"]
+script = ExtResource("1_spawner")
+auto_collect_spawn_points = true
+wave_advance_mode = 1
+delay_between_waves = 2.0
+one_shot = true
