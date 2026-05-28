@@ -10,6 +10,7 @@ func _ready() -> void:
 
 func spawn(scene: PackedScene, parent: Node) -> Node:
 	var enemy := scene.instantiate()
-	parent.add_child(enemy)
-	enemy.global_position = global_position
+	var spawn_pos := global_position
+	parent.call_deferred("add_child", enemy)
+	enemy.call_deferred("set_global_position", spawn_pos)
 	return enemy

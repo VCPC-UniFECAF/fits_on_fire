@@ -9,25 +9,41 @@
 [ext_resource type="PackedScene" uid="uid://com4mxrdnmdeb" path="res://prefabs/wolf.tscn" id="7_wolf"]
 [ext_resource type="PackedScene" uid="uid://qyniyirbenwr" path="res://prefabs/zombie.tscn" id="8_zombie"]
 [ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="9_wise"]
-[ext_resource type="Script" path="res://scripts/enemy_wave.gd" id="10_wave_script"]
-[ext_resource type="PackedScene" path="res://prefabs/enemy_spawner.tscn" id="11_spawner"]
-[ext_resource type="PackedScene" path="res://prefabs/spawn_point.tscn" id="12_spawn_pt"]
-[ext_resource type="PackedScene" path="res://prefabs/activate_spawn.tscn" id="13_activate"]
+[ext_resource type="Script" uid="uid://cuu8421w3ywf1" path="res://scripts/wave_config.gd" id="10_wave_config"]
+[ext_resource type="PackedScene" uid="uid://ci4wekdc6pi7y" path="res://prefabs/enemy_spawner.tscn" id="11_spawner"]
+[ext_resource type="PackedScene" uid="uid://spawnpoint01" path="res://prefabs/spawn_point.tscn" id="12_spawn_pt"]
+[ext_resource type="PackedScene" uid="uid://chv4t5k5uhfc7" path="res://prefabs/activate_spawn.tscn" id="13_activate"]
+[ext_resource type="Script" uid="uid://cp6v3mrbk6a7x" path="res://scripts/wave_spawn_entry.gd" id="14_wave_entry"]
 
-[sub_resource type="Resource" id="EnemyWave_zombie"]
-script = ExtResource("10_wave_script")
+[sub_resource type="Resource" id="Entry_zombie"]
+script = ExtResource("14_wave_entry")
 enemy_scene = ExtResource("8_zombie")
 count = 2
 
-[sub_resource type="Resource" id="EnemyWave_wolf"]
-script = ExtResource("10_wave_script")
+[sub_resource type="Resource" id="Wave_zombie"]
+script = ExtResource("10_wave_config")
+display_name = "Zombies"
+entries = Array[ExtResource("14_wave_entry")]([SubResource("Entry_zombie")])
+
+[sub_resource type="Resource" id="Entry_wolf"]
+script = ExtResource("14_wave_entry")
 enemy_scene = ExtResource("7_wolf")
 count = 2
 
-[sub_resource type="Resource" id="EnemyWave_orc"]
-script = ExtResource("10_wave_script")
+[sub_resource type="Resource" id="Wave_wolf"]
+script = ExtResource("10_wave_config")
+display_name = "Lobos"
+entries = Array[ExtResource("14_wave_entry")]([SubResource("Entry_wolf")])
+
+[sub_resource type="Resource" id="Entry_orc"]
+script = ExtResource("14_wave_entry")
 enemy_scene = ExtResource("6_orc")
 count = 2
+
+[sub_resource type="Resource" id="Wave_orc"]
+script = ExtResource("10_wave_config")
+display_name = "Orcs"
+entries = Array[ExtResource("14_wave_entry")]([SubResource("Entry_orc")])
 
 [node name="house" type="Node2D" unique_id=572614891]
 
@@ -150,7 +166,7 @@ smooth_speed = 10.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("4_war")]
-position = Vector2(92, 80)
+position = Vector2(93, 80)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("5_wiz")]
 position = Vector2(221, 107)
@@ -160,15 +176,16 @@ position = Vector2(160, 104)
 fase_atual = 5
 
 [node name="EnemySpawner" parent="." unique_id=1792461109 instance=ExtResource("11_spawner")]
-waves = Array[ExtResource("10_wave_script")]([SubResource("EnemyWave_zombie"), SubResource("EnemyWave_wolf"), SubResource("EnemyWave_orc")])
+position = Vector2(-2, 0)
+waves = Array[ExtResource("10_wave_config")]([SubResource("Wave_zombie"), SubResource("Wave_wolf"), SubResource("Wave_orc")])
 
 [node name="SpawnPoint1" parent="EnemySpawner" unique_id=662467610 instance=ExtResource("12_spawn_pt")]
-position = Vector2(228, 79)
+position = Vector2(171, 68)
 gizmo_extents = 0.0
 enemy_scene_override = ExtResource("7_wolf")
 
 [node name="SpawnPoint2" parent="EnemySpawner" unique_id=1879776707 instance=ExtResource("12_spawn_pt")]
-position = Vector2(91, 48)
+position = Vector2(187, 53)
 gizmo_extents = 0.0
 enemy_scene_override = ExtResource("8_zombie")
 

@@ -42,7 +42,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if _spawner == null:
 		push_warning("ActivateSpawn: spawner não configurado.")
 		return
-	_spawner.start()
+	_spawner.call_deferred("start")
 	if trigger_once:
 		_triggered = true
 		set_deferred("monitoring", false)

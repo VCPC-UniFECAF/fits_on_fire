@@ -11,7 +11,7 @@ signal wave_started(wave_index: int)
 signal wave_completed(wave_index: int)
 signal all_waves_completed
 
-@export var waves: Array[EnemyWave] = []
+@export var waves: Array[WaveConfig] = []
 @export var spawn_points: Array[SpawnPoint] = []
 @export var auto_collect_spawn_points: bool = true
 @export var wave_advance_mode: WaveAdvanceMode = WaveAdvanceMode.CLEAR_ALL
@@ -86,10 +86,16 @@ func _get_next_spawn_point() -> SpawnPoint:
 	return point
 
 
-func _resolve_scene(point: SpawnPoint, wave: EnemyWave) -> PackedScene:
+func _get_spawn_point_for_entry(entry: WaveSpawnEntry) -> SpawnPoint:
+	if entry.spawn_point_index >= 0 and entry.spawn_point_index < _resolved_points.size():
+		return _resolved_points[entry.spawn_point_index]
+	return _get_next_spawn_point()
+
+
+func _resolve_scene(point: SpawnPoint, entry: WaveSpawnEntry) -> PackedScene:
 	if point.enemy_scene_override != null:
 		return point.enemy_scene_override
-	return wave.enemy_scene
+	return entry.enemy_scene
 
 
 func _has_any_override() -> bool:
@@ -97,6 +103,12 @@ func _has_any_override() -> bool:
 		if point.enemy_scene_override != null:
 			return true
 	return false
+
+
+func _entry_delay(entry: WaveSpawnEntry, wave: WaveConfig) -> float:
+	if entry.delay_between_spawns >= 0.0:
+		return entry.delay_between_spawns
+	return wave.delay_between_spawns
 
 
 func _prune_spawned() -> void:
@@ -130,43 +142,88 @@ func _run_waves_async() -> void:
 			return
 		wave_completed.emit(wave_index)
 		if wave_index < waves.size() - 1:
-			await _wait_before_next_wave()
+			await _wait_before_next_wave(wave)
 	if _running:
 		all_waves_completed.emit()
 	_running = false
 
 
-func _spawn_wave(wave: EnemyWave) -> void:
-	if wave.enemy_scene == null and not _has_any_override():
-		push_warning("EnemySpawner: onda sem enemy_scene.")
-	for i in wave.count:
+func _spawn_wave(wave: WaveConfig) -> void:
+	if wave.delay_before_wave > 0.0:
+		await get_tree().create_timer(wave.delay_before_wave).timeout
 		if not _running:
 			return
-		var point := _get_next_spawn_point()
-		var scene := _resolve_scene(point, wave)
+
+	if wave.entries.is_empty():
+		push_warning("EnemySpawner: onda '%s' sem entries." % _wave_label(wave))
+		return
+
+	var has_scene := false
+	for entry in wave.entries:
+		if entry != null and entry.enemy_scene != null:
+			has_scene = true
+			break
+	if not has_scene and not _has_any_override():
+		push_warning("EnemySpawner: onda '%s' sem enemy_scene." % _wave_label(wave))
+
+	for entry in wave.entries:
+		if not _running:
+			return
+		if entry == null:
+			continue
+		await _spawn_entry(entry, wave)
+
+
+func _spawn_entry(entry: WaveSpawnEntry, wave: WaveConfig) -> void:
+	var spawn_delay := _entry_delay(entry, wave)
+	for i in entry.count:
+		if not _running:
+			return
+		var point := _get_spawn_point_for_entry(entry)
+		var scene := _resolve_scene(point, entry)
 		if scene == null:
 			push_warning("EnemySpawner: cena de inimigo não definida.")
 			continue
 		var enemy := point.spawn(scene, _get_spawn_parent())
 		if enemy:
 			_spawned.append(enemy)
-		if i < wave.count - 1 and wave.delay_between_spawns > 0.0:
-			await get_tree().create_timer(wave.delay_between_spawns).timeout
+		if i < entry.count - 1 and spawn_delay > 0.0:
+			await get_tree().create_timer(spawn_delay).timeout
 
 
-func _wait_before_next_wave() -> void:
+func _wave_delay_after(wave: WaveConfig) -> float:
+	if wave.delay_after_wave >= 0.0:
+		return wave.delay_after_wave
+	return delay_between_waves
+
+
+func _resolve_advance_mode(wave: WaveConfig) -> WaveAdvanceMode:
+	match wave.advance_mode:
+		WaveConfig.AdvanceMode.DELAY:
+			return WaveAdvanceMode.DELAY
+		WaveConfig.AdvanceMode.CLEAR_ALL:
+			return WaveAdvanceMode.CLEAR_ALL
+		WaveConfig.AdvanceMode.BOTH:
+			return WaveAdvanceMode.BOTH
+		_:
+			return wave_advance_mode
+
+
+func _wait_before_next_wave(wave: WaveConfig) -> void:
 	if not _running:
 		return
-	match wave_advance_mode:
+	var mode := _resolve_advance_mode(wave)
+	var pause := _wave_delay_after(wave)
+	match mode:
 		WaveAdvanceMode.DELAY:
-			await get_tree().create_timer(delay_between_waves).timeout
+			await get_tree().create_timer(pause).timeout
 		WaveAdvanceMode.CLEAR_ALL:
 			await _wait_until_clear()
 		WaveAdvanceMode.BOTH:
 			var start_ms := Time.get_ticks_msec()
 			await _wait_until_clear()
 			var elapsed := (Time.get_ticks_msec() - start_ms) / 1000.0
-			var remaining := delay_between_waves - elapsed
+			var remaining := pause - elapsed
 			if remaining > 0.0:
 				await get_tree().create_timer(remaining).timeout
 
@@ -176,3 +233,9 @@ func _wait_until_clear() -> void:
 	while _running and _count_living_spawned() > 0:
 		await get_tree().create_timer(0.25).timeout
 		_prune_spawned()
+
+
+func _wave_label(wave: WaveConfig) -> String:
+	if not wave.display_name.is_empty():
+		return wave.display_name
+	return "Wave"
