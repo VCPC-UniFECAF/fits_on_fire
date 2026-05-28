@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wdlf3woargk6" path="res://scripts/zombie.gd" id="1_zombie"]
 [ext_resource type="Texture2D" uid="uid://cwapd2yqqebcc" path="res://sprites/Enemies/zombie/zombies.png" id="2_vlph1"]
+[ext_resource type="Script" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kewk0"]
 atlas = ExtResource("2_vlph1")
@@ -39,3 +40,14 @@ sprite_frames = SubResource("SpriteFrames_2cjbq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1073185151]
 shape = SubResource("CapsuleShape2D_chjal")
+
+[node name="EnemyHealthBar" type="Control" parent="." unique_id=8837035]
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_left = -13.0
+offset_top = -24.0
+offset_right = -13.0
+offset_bottom = -24.0
+mouse_filter = 2
+script = ExtResource("3_hbar")

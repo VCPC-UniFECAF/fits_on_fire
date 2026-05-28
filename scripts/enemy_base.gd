@@ -1,5 +1,7 @@
 extends Area2D
 
+signal health_changed(current: int, maximum: int)
+
 @export var max_health: int = 100
 @export var speed: float = 30.0
 @export var contact_damage: int = 15
@@ -14,11 +16,15 @@ var is_alive: bool = true
 var _contact_timer: float = 0.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var _health_bar: EnemyHealthBar = $EnemyHealthBar
 
 
 func _ready() -> void:
 	add_to_group("enemy")
 	health = max_health
+	health_changed.emit(health, max_health)
+	if _health_bar:
+		_health_bar.bind_host(self)
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
 
@@ -96,6 +102,7 @@ func take_damage(amount: int, _attacker: Node = null, knockback_force: float = 0
 	if not is_alive:
 		return
 	health -= amount
+	health_changed.emit(health, max_health)
 	if knockback_force > 0.0 and _attacker is Node2D:
 		var kb_dir := global_position.direction_to(_attacker.global_position) * -1.0
 		global_position += kb_dir * knockback_force * 0.05
@@ -109,6 +116,9 @@ func die() -> void:
 	if not is_alive:
 		return
 	is_alive = false
+	health_changed.emit(0, max_health)
+	if _health_bar:
+		_health_bar.visible = false
 	if sprite and sprite.sprite_frames.has_animation("die"):
 		sprite.play("die")
 	if has_node("CollisionShape2D"):

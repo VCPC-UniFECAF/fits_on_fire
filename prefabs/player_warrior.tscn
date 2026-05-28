@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cwypankx33ntn" path="res://sprites/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="3_jvsjs"]
 [ext_resource type="Texture2D" uid="uid://dnnuhg2gpenpq" path="res://sprites/Characters(100x100)/Soldier/Soldier/Soldier-Hurt.png" id="4_judw2"]
 [ext_resource type="Texture2D" uid="uid://cftqv76puteww" path="res://sprites/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png" id="6_md4q8"]
+[ext_resource type="Texture2D" uid="uid://bjoacqonpm6cm" path="res://sprites/Characters(100x100)/Soldier/Soldier/walk_down.png" id="8_md4q8"]
+[ext_resource type="Texture2D" uid="uid://bfedrm7jxdgh6" path="res://sprites/Characters(100x100)/Soldier/Soldier/walk_up.png" id="9_k5rwe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r1b1u"]
 atlas = ExtResource("2_judw2")
@@ -112,6 +114,30 @@ region = Rect2(400, 0, 100, 100)
 atlas = ExtResource("3_jvsjs")
 region = Rect2(500, 0, 100, 100)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hwe3"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(0, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1aewt"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(170, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcu8j"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(340, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45bj3"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(510, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jttuk"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(680, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxral"]
+atlas = ExtResource("8_md4q8")
+region = Rect2(850, 0, 170, 171)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_1kl07"]
 atlas = ExtResource("6_md4q8")
 region = Rect2(0, 0, 100, 100)
@@ -143,6 +169,26 @@ region = Rect2(600, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_hxojk"]
 atlas = ExtResource("6_md4q8")
 region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eg4yo"]
+atlas = ExtResource("9_k5rwe")
+region = Rect2(170, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8esgy"]
+atlas = ExtResource("9_k5rwe")
+region = Rect2(340, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg1ml"]
+atlas = ExtResource("9_k5rwe")
+region = Rect2(510, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irv2h"]
+atlas = ExtResource("9_k5rwe")
+region = Rect2(680, 0, 170, 171)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65pgo"]
+atlas = ExtResource("9_k5rwe")
+region = Rect2(850, 0, 170, 171)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_war"]
 animations = [{
@@ -251,6 +297,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_2hwe3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1aewt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcu8j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45bj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jttuk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxral")
+}],
+"loop": true,
+"name": &"walk_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_1kl07")
 }, {
 "duration": 1.0,
@@ -277,6 +346,26 @@ animations = [{
 "loop": true,
 "name": &"walk_side",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eg4yo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8esgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kg1ml")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_irv2h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65pgo")
+}],
+"loop": true,
+"name": &"walk_up",
+"speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_war"]
@@ -286,15 +375,14 @@ height = 26.0
 [node name="PlayerWarrior" type="CharacterBody2D" unique_id=592370139 groups=["player"]]
 collision_mask = 3
 script = ExtResource("1_war")
-player_id = 0
 light_hitbox_offset = Vector2(1, 0)
 heavy_hitbox_offset = Vector2(1, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1984796809]
+scale = Vector2(0.98, 0.9800007)
 sprite_frames = SubResource("SpriteFrames_war")
-animation = &"walk_side"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.29793763
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1232469847]
 shape = SubResource("CapsuleShape2D_war")

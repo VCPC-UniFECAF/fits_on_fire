@@ -2,17 +2,21 @@
 
 [ext_resource type="PackedScene" uid="uid://cmppiquxqyap6" path="res://prefabs/player_warrior.tscn" id="1_warrior"]
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://com4mxrdnmdeb" path="res://prefabs/wolf.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="6_wise"]
 
 [node name="main" type="Node2D" unique_id=155895530]
 
 [node name="PlayerWarrior" parent="." unique_id=1324255916 instance=ExtResource("1_warrior")]
-position = Vector2(128, 148)
+position = Vector2(132, 100)
 light_hitbox_offset = Vector2(0, 0)
 heavy_hitbox_offset = Vector2(0, 0)
 
 [node name="PlayerWizard" parent="." unique_id=619765013 instance=ExtResource("3_sugp2")]
-position = Vector2(202, 120)
+position = Vector2(205, 108)
 
 [node name="Wise" parent="." unique_id=727055005 instance=ExtResource("6_wise")]
 position = Vector2(160, 140)
+
+[node name="wolf" parent="." unique_id=1712616006 instance=ExtResource("4_jyhfs")]
+position = Vector2(77, 94)

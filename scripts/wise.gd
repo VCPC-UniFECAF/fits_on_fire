@@ -4,6 +4,8 @@ extends Area2D
 @export var fase_atual: int = 1
 
 const GEMINI_URL := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+const PROMPT_INTERACT := "▲ Interagir"
+const PROMPT_BLOCKED := "Derrote os inimigos primeiro"
 const LORE_POR_FASE: Dictionary = {
 	1: (
 		"Fase 1 — O Sábio de Madeira (A Casa): "
@@ -40,7 +42,7 @@ const LORE_POR_FASE: Dictionary = {
 @onready var http_request: HTTPRequest = $HTTPRequest
 
 var _player_in_range: Node2D = null
-var _player_ref: Node2D = null
+var _frozen_players: Array[Node2D] = []
 var _dialog_open: bool = false
 var _waiting_api: bool = false
 var _api_key: String = ""
@@ -75,19 +77,68 @@ func _load_gemini_api_key() -> String:
 	return ""
 
 
+func _process(_delta: float) -> void:
+	_update_prompt_visibility()
+
+
+func _has_living_enemies() -> bool:
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if not is_instance_valid(enemy):
+			continue
+		if "is_alive" in enemy:
+			if enemy.is_alive:
+				return true
+		elif "health" in enemy:
+			if enemy.health > 0:
+				return true
+	return false
+
+
+func _update_prompt_visibility() -> void:
+	if _dialog_open:
+		return
+	if _player_in_range == null:
+		prompt_label.visible = false
+		return
+	prompt_label.visible = true
+	if _has_living_enemies():
+		prompt_label.text = PROMPT_BLOCKED
+	else:
+		prompt_label.text = PROMPT_INTERACT
+
+
+func _freeze_all_players() -> void:
+	_frozen_players.clear()
+	for node in get_tree().get_nodes_in_group("player"):
+		if not node is Node2D or not is_instance_valid(node):
+			continue
+		if node.has_method("is_alive") and not node.is_alive():
+			continue
+		node.set_physics_process(false)
+		if node is CharacterBody2D:
+			node.velocity = Vector2.ZERO
+		_frozen_players.append(node)
+
+
+func _unfreeze_all_players() -> void:
+	for node in _frozen_players:
+		if is_instance_valid(node):
+			node.set_physics_process(true)
+	_frozen_players.clear()
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
 		return
 	_player_in_range = body
-	if not _dialog_open:
-		prompt_label.visible = true
+	_update_prompt_visibility()
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if body != _player_in_range:
 		return
 	_player_in_range = null
-	prompt_label.visible = false
+	_update_prompt_visibility()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -101,20 +152,23 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if not event.is_action_pressed("interact"):
 		return
+	if _has_living_enemies():
+		return
 
 	_open_dialog(_player_in_range)
 	get_viewport().set_input_as_handled()
 
 
-func _open_dialog(player: Node2D) -> void:
+func _open_dialog(_player: Node2D) -> void:
+	if _has_living_enemies():
+		return
 	_dialog_open = true
-	_player_ref = player
 	prompt_label.visible = false
 	dialog_canvas.visible = true
 	chat_log.clear()
 	chat_log.append_text("[i]Converse com o sábio. Enter envia. Esc fecha.[/i]\n\n")
 	_conversation.clear()
-	player.set_physics_process(false)
+	_freeze_all_players()
 	player_input.clear()
 	player_input.grab_focus()
 
@@ -123,11 +177,8 @@ func _close_dialog() -> void:
 	_dialog_open = false
 	dialog_canvas.visible = false
 	_waiting_api = false
-	if _player_ref and is_instance_valid(_player_ref):
-		_player_ref.set_physics_process(true)
-	_player_ref = null
-	if _player_in_range:
-		prompt_label.visible = true
+	_unfreeze_all_players()
+	_update_prompt_visibility()
 
 
 func _on_player_input_submitted(text: String) -> void:

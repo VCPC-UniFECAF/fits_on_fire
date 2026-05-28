@@ -5,7 +5,29 @@
 [ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="3_cam"]
 [ext_resource type="PackedScene" uid="uid://cmppiquxqyap6" path="res://prefabs/player_warrior.tscn" id="4_war"]
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="5_wiz"]
-[ext_resource type="PackedScene" uid="uid://dhinqg56j8sjl" path="res://prefabs/orc.tscn" id="6_f74lx"]
+[ext_resource type="PackedScene" uid="uid://dhinqg56j8sjl" path="res://prefabs/orc.tscn" id="6_orc"]
+[ext_resource type="PackedScene" uid="uid://com4mxrdnmdeb" path="res://prefabs/wolf.tscn" id="7_wolf"]
+[ext_resource type="PackedScene" uid="uid://qyniyirbenwr" path="res://prefabs/zombie.tscn" id="8_zombie"]
+[ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="9_wise"]
+[ext_resource type="Script" path="res://scripts/enemy_wave.gd" id="10_wave_script"]
+[ext_resource type="PackedScene" path="res://prefabs/enemy_spawner.tscn" id="11_spawner"]
+[ext_resource type="PackedScene" path="res://prefabs/spawn_point.tscn" id="12_spawn_pt"]
+[ext_resource type="PackedScene" path="res://prefabs/activate_spawn.tscn" id="13_activate"]
+
+[sub_resource type="Resource" id="EnemyWave_zombie"]
+script = ExtResource("10_wave_script")
+enemy_scene = ExtResource("8_zombie")
+count = 2
+
+[sub_resource type="Resource" id="EnemyWave_wolf"]
+script = ExtResource("10_wave_script")
+enemy_scene = ExtResource("7_wolf")
+count = 2
+
+[sub_resource type="Resource" id="EnemyWave_orc"]
+script = ExtResource("10_wave_script")
+enemy_scene = ExtResource("6_orc")
+count = 2
 
 [node name="house" type="Node2D" unique_id=572614891]
 
@@ -24,7 +46,9 @@ script = ExtResource("2_hbar")
 
 [node name="LabelPlayer" type="Label" parent="HUD/lifeplayer1" unique_id=111111101]
 layout_mode = 0
-offset_right = 16.0
+offset_left = 7.0
+offset_top = -2.0
+offset_right = 23.0
 offset_bottom = 10.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -53,9 +77,10 @@ color = Color(0.41960785, 0.7490196, 0.34901962, 1)
 
 [node name="LabelPercent" type="Label" parent="HUD/lifeplayer1" unique_id=111111104]
 layout_mode = 0
-offset_left = 70.0
-offset_right = 120.0
-offset_bottom = 10.0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 118.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
@@ -75,7 +100,9 @@ script = ExtResource("2_hbar")
 
 [node name="LabelPlayer" type="Label" parent="HUD/lifeplayer2" unique_id=111111201]
 layout_mode = 0
-offset_right = 16.0
+offset_left = 7.0
+offset_top = -2.0
+offset_right = 23.0
 offset_bottom = 10.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -104,9 +131,10 @@ color = Color(0.41960785, 0.7490196, 0.34901962, 1)
 
 [node name="LabelPercent" type="Label" parent="HUD/lifeplayer2" unique_id=111111204]
 layout_mode = 0
-offset_left = 70.0
-offset_right = 120.0
-offset_bottom = 10.0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 118.0
+offset_bottom = 11.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
@@ -115,17 +143,40 @@ text = "100%"
 vertical_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=619162892]
-position = Vector2(160, 83)
+position = Vector2(156, 85)
 zoom = Vector2(2, 2)
 script = ExtResource("3_cam")
 smooth_speed = 10.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("4_war")]
-position = Vector2(106, 86)
+position = Vector2(92, 80)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("5_wiz")]
-position = Vector2(185, 87)
+position = Vector2(221, 107)
 
-[node name="orc" parent="." unique_id=304333733 instance=ExtResource("6_f74lx")]
-position = Vector2(209, 83)
+[node name="wise" parent="." unique_id=1280104328 instance=ExtResource("9_wise")]
+position = Vector2(160, 104)
+fase_atual = 5
+
+[node name="EnemySpawner" parent="." unique_id=1792461109 instance=ExtResource("11_spawner")]
+waves = Array[ExtResource("10_wave_script")]([SubResource("EnemyWave_zombie"), SubResource("EnemyWave_wolf"), SubResource("EnemyWave_orc")])
+
+[node name="SpawnPoint1" parent="EnemySpawner" unique_id=662467610 instance=ExtResource("12_spawn_pt")]
+position = Vector2(228, 79)
+gizmo_extents = 0.0
+enemy_scene_override = ExtResource("7_wolf")
+
+[node name="SpawnPoint2" parent="EnemySpawner" unique_id=1879776707 instance=ExtResource("12_spawn_pt")]
+position = Vector2(91, 48)
+gizmo_extents = 0.0
+enemy_scene_override = ExtResource("8_zombie")
+
+[node name="SpawnPoint3" parent="EnemySpawner" unique_id=680110013 instance=ExtResource("12_spawn_pt")]
+position = Vector2(220, 48)
+gizmo_extents = 0.0
+enemy_scene_override = ExtResource("6_orc")
+
+[node name="ActivateSpawn" parent="." unique_id=623692711 instance=ExtResource("13_activate")]
+position = Vector2(115, 112)
+spawner_path = NodePath("../EnemySpawner")

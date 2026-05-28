@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dxoxeg0p6w2jq" path="res://scripts/wolf.gd" id="1_wolf"]
 [ext_resource type="Texture2D" uid="uid://dme76l65fxi56" path="res://sprites/Enemies/humanwolf/wolf.png" id="2_tex"]
+[ext_resource type="Script" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wolf"]
 atlas = ExtResource("2_tex")
@@ -59,3 +60,14 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=1835814102]
 position = Vector2(10, 0)
 shape = SubResource("RectangleShape2D_sword")
+
+[node name="EnemyHealthBar" type="Control" parent="." unique_id=582063206]
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_left = -15.0
+offset_top = -25.0
+offset_right = -15.0
+offset_bottom = -25.0
+mouse_filter = 2
+script = ExtResource("3_hbar")

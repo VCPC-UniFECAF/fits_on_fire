@@ -46,10 +46,11 @@ func _physics_process(delta: float) -> void:
 
 	match state:
 		State.IDLE, State.MOVE:
-			_process_movement()
+			_apply_movement_from_input()
+			_update_locomotion_state()
 			_process_attack_input()
 		State.ATTACK_LIGHT, State.ATTACK_HEAVY:
-			velocity = velocity.move_toward(Vector2.ZERO, speed * 2.0)
+			_apply_movement_from_input()
 		State.HIT:
 			if _knockback_timer > 0.0:
 				_knockback_timer -= delta
@@ -71,15 +72,20 @@ func get_move_vector() -> Vector2:
 	return Input.get_vector(prefix + "left", prefix + "right", prefix + "up", prefix + "down")
 
 
-func _process_movement() -> void:
+func _apply_movement_from_input() -> void:
 	direction = get_move_vector()
 	if direction != Vector2.ZERO:
 		velocity = direction * speed
-		state = State.MOVE
 		if abs(direction.x) > 0.01:
 			facing_right = direction.x > 0.0
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, speed)
+
+
+func _update_locomotion_state() -> void:
+	if direction != Vector2.ZERO:
+		state = State.MOVE
+	else:
 		state = State.IDLE
 
 
@@ -184,10 +190,16 @@ func _update_animation() -> void:
 			if sprite.sprite_frames.has_animation("walk_side"):
 				sprite.play("walk_side")
 		else:
-			if direction.y < 0 and sprite.sprite_frames.has_animation("up"):
-				sprite.play("up")
-			elif direction.y > 0 and sprite.sprite_frames.has_animation("down"):
-				sprite.play("down")
+			if direction.y < 0:
+				if sprite.sprite_frames.has_animation("walk_up"):
+					sprite.play("walk_up")
+				elif sprite.sprite_frames.has_animation("up"):
+					sprite.play("up")
+			elif direction.y > 0:
+				if sprite.sprite_frames.has_animation("walk_down"):
+					sprite.play("walk_down")
+				elif sprite.sprite_frames.has_animation("down"):
+					sprite.play("down")
 			elif sprite.sprite_frames.has_animation("walk_side"):
 				sprite.play("walk_side")
 
