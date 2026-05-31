@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="fits_on_fire"
+run/main_scene="uid://cwxoxvf0nnqla"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=320
-window/size/viewport_height=180
+window/size/viewport_width=960
+window/size/viewport_height=540
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="viewport"

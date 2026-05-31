@@ -5,11 +5,12 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	await get_tree().process_frame
-	_bind_players()
+	call_deferred("_bind_players")
 
 
 func _bind_players() -> void:
+	if not is_inside_tree():
+		return
 	for node in get_tree().get_nodes_in_group("player"):
 		if node is PlayerBase:
 			var player := node as PlayerBase

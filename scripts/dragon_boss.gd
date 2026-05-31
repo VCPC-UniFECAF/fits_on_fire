@@ -4,7 +4,12 @@ enum BossState { IDLE, WINDUP, ACTIVE, RECOVER }
 enum AttackType { CLAW, TAIL, WING, FIRE }
 
 @export var max_health: int = 500
-@export var anchor_x: float = 40.0
+@export var move_speed: float = 40.0
+@export var reposition_distance: float = 180.0
+@export var stop_distance: float = 100.0
+@export var move_to_idle_delay: float = 0.5
+@export var arena_margin: float = 80.0
+@export var arena_bounds: Rect2 = Rect2(0, 0, 0, 0)
 @export var claw_damage: int = 18
 @export var tail_damage: int = 22
 @export var wing_damage: int = 12
@@ -21,29 +26,55 @@ var _attack_cooldowns: Dictionary = {
 }
 var _consecutive_claws: int = 0
 var _current_attack: AttackType = AttackType.CLAW
+var _facing_right: bool = true
+var _aim_direction: Vector2 = Vector2.RIGHT
+var _arena_rect: Rect2 = Rect2()
+var _has_arena_bounds: bool = false
+var _is_moving: bool = false
+var _was_moving: bool = false
+var _move_to_idle_timer: float = 0.0
 
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var claw_hitbox: Area2D = $ClawHitbox
-@onready var tail_hitbox: Area2D = $TailHitbox
-@onready var wing_hitbox: Area2D = $WingHitbox
-@onready var fire_hitbox: Area2D = $FireHitbox
-@onready var hurtbox: Area2D = $Hurtbox
+@onready var facing_pivot: Node2D = $FacingPivot
+@onready var sprite: AnimatedSprite2D = $FacingPivot/AnimatedSprite2D
+@onready var attack_sprite: AnimatedSprite2D = $FacingPivot/AnimatedSprite2D2
+@onready var claw_hitbox: Area2D = $FacingPivot/ClawHitbox
+@onready var tail_hitbox: Area2D = $FacingPivot/TailHitbox
+@onready var wing_hitbox: Area2D = $FacingPivot/WingHitbox
+@onready var fire_hitbox: Area2D = $FacingPivot/FireHitbox
+@onready var hurtbox: Area2D = $FacingPivot/Hurtbox
 
 var _hit_players: Array = []
+var _is_dead: bool = false
 
 
 func _ready() -> void:
 	add_to_group("boss")
 	add_to_group("enemy")
 	health = max_health
-	global_position.x = anchor_x
+	_setup_arena_bounds()
 	_disable_all_hitboxes()
 	for hb in [claw_hitbox, tail_hitbox, wing_hitbox, fire_hitbox]:
 		if hb:
 			hb.body_entered.connect(_on_boss_hitbox.bind(hb))
 	if hurtbox:
 		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	_set_attack_sprite_visible(false)
 	_pick_next_attack()
+
+
+func _setup_arena_bounds() -> void:
+	var cam := get_parent().get_node_or_null("Camera2D") as Camera2D
+	if cam:
+		_arena_rect = Rect2(
+			cam.limit_left + arena_margin,
+			cam.limit_top + arena_margin,
+			cam.limit_right - cam.limit_left - arena_margin * 2.0,
+			cam.limit_bottom - cam.limit_top - arena_margin * 2.0
+		)
+		_has_arena_bounds = _arena_rect.size.x > 0.0 and _arena_rect.size.y > 0.0
+	elif arena_bounds.size.x > 0.0 and arena_bounds.size.y > 0.0:
+		_arena_rect = arena_bounds
+		_has_arena_bounds = true
 
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
@@ -52,22 +83,100 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	global_position.x = anchor_x
+	if _is_dead:
+		return
+
 	for key in _attack_cooldowns.keys():
 		if _attack_cooldowns[key] > 0.0:
 			_attack_cooldowns[key] -= delta
+
+	var target := _get_nearest_player()
+	if target and boss_state == BossState.IDLE:
+		_update_aim(target)
+
+	_is_moving = false
+	if boss_state == BossState.IDLE and target:
+		_try_reposition(delta, target)
+
+	if _was_moving and not _is_moving:
+		_move_to_idle_timer = move_to_idle_delay
+	if _is_moving:
+		_move_to_idle_timer = 0.0
+	_was_moving = _is_moving
+
+	if _move_to_idle_timer > 0.0:
+		_move_to_idle_timer -= delta
+
+	if boss_state == BossState.IDLE:
+		_update_locomotion_anim(_is_moving)
 
 	if _state_timer > 0.0:
 		_state_timer -= delta
 		if _state_timer <= 0.0:
 			_advance_state()
-			return
+
+
+func _try_reposition(delta: float, target: Node2D) -> void:
+	var dist := global_position.distance_to(target.global_position)
+	if dist <= reposition_distance:
+		return
+
+	var move_dir := global_position.direction_to(target.global_position)
+	global_position += move_dir * move_speed * delta
+	_clamp_to_arena()
+	_is_moving = true
+
+
+func _clamp_to_arena() -> void:
+	if not _has_arena_bounds:
+		return
+	global_position = global_position.clamp(_arena_rect.position, _arena_rect.end)
+
+
+func _update_aim(target: Node2D) -> void:
+	if not target or not facing_pivot:
+		return
+	var dir := global_position.direction_to(target.global_position)
+	if _current_attack == AttackType.TAIL and boss_state in [BossState.WINDUP, BossState.ACTIVE]:
+		dir = -dir
+	if dir.length_squared() < 0.01:
+		dir = Vector2.RIGHT
+	var angle := dir.angle()
+	if angle > PI / 2.0 or angle < -PI / 2.0:
+		facing_pivot.scale.x = -1.0
+		facing_pivot.scale.y = 1.0
+		facing_pivot.rotation = PI - angle
+	else:
+		facing_pivot.scale.x = 1.0
+		facing_pivot.scale.y = 1.0
+		facing_pivot.rotation = angle
+	_aim_direction = dir
+	_facing_right = dir.x >= 0.0
+
+
+func _update_locomotion_anim(is_moving: bool) -> void:
+	if not sprite:
+		return
+	_set_attack_sprite_visible(false)
+	if is_moving or _move_to_idle_timer > 0.0:
+		if sprite.animation != "move":
+			sprite.play("move")
+	elif sprite.sprite_frames.has_animation("idle"):
+		sprite.play("idle")
 
 
 func _advance_state() -> void:
 	match boss_state:
 		BossState.IDLE:
+			var target := _get_nearest_player()
+			if target == null:
+				_state_timer = 1.0
+				return
+			if global_position.distance_to(target.global_position) > stop_distance:
+				_state_timer = 0.3
+				return
 			boss_state = BossState.WINDUP
+			_update_aim(target)
 			_state_timer = _get_windup_time(_current_attack)
 			_play_windup_anim(_current_attack)
 		BossState.WINDUP:
@@ -78,6 +187,7 @@ func _advance_state() -> void:
 			_disable_all_hitboxes()
 			boss_state = BossState.RECOVER
 			_state_timer = _get_recover_time(_current_attack)
+			_return_to_idle()
 		BossState.RECOVER:
 			boss_state = BossState.IDLE
 			_state_timer = 0.5
@@ -85,13 +195,18 @@ func _advance_state() -> void:
 
 
 func _pick_next_attack() -> void:
-	var target := _nearest_player_to_right()
+	var target := _get_nearest_player()
 	if target == null:
 		_state_timer = 1.0
 		return
 
-	var dist: float = target.global_position.x - global_position.x
+	var dist: float = global_position.distance_to(target.global_position)
+	if dist > stop_distance:
+		_state_timer = 0.3
+		return
+
 	_current_attack = _choose_attack(dist)
+	_update_aim(target)
 	boss_state = BossState.IDLE
 	_state_timer = 0.3
 
@@ -115,14 +230,12 @@ func _choose_attack(dist: float) -> AttackType:
 	return AttackType.TAIL
 
 
-func _nearest_player_to_right() -> Node2D:
+func _get_nearest_player() -> Node2D:
 	var nearest: Node2D = null
 	var nearest_dist := INF
 	for node in get_tree().get_nodes_in_group("player"):
 		if node is Node2D and node.has_method("is_alive") and node.is_alive():
 			var player := node as Node2D
-			if player.global_position.x < global_position.x:
-				continue
 			var dist: float = global_position.distance_squared_to(player.global_position)
 			if dist < nearest_dist:
 				nearest_dist = dist
@@ -135,25 +248,34 @@ func _players_in_range(min_dist: float, max_dist: float) -> int:
 	for node in get_tree().get_nodes_in_group("player"):
 		if node is Node2D and node.has_method("is_alive") and node.is_alive():
 			var player := node as Node2D
-			if player.global_position.x <= global_position.x:
-				continue
-			var dist_x: float = player.global_position.x - global_position.x
-			if dist_x >= min_dist and dist_x < max_dist:
+			var dist: float = global_position.distance_to(player.global_position)
+			if dist >= min_dist and dist < max_dist:
 				count += 1
 	return count
 
 
 func take_damage(amount: int, _attacker: Node = null, _knockback_force: float = 0.0) -> void:
+	if _is_dead:
+		return
 	health -= amount
 	if health <= 0:
 		_die()
 
 
 func _die() -> void:
+	if _is_dead:
+		return
+	_is_dead = true
 	_disable_all_hitboxes()
-	if sprite and sprite.sprite_frames.has_animation("death"):
-		sprite.play("death")
-	await get_tree().create_timer(2.0).timeout
+	if sprite:
+		sprite.visible = false
+		sprite.stop()
+	if attack_sprite and attack_sprite.sprite_frames.has_animation("death"):
+		attack_sprite.visible = true
+		attack_sprite.play("death")
+		await attack_sprite.animation_finished
+	else:
+		await get_tree().create_timer(2.0).timeout
 	queue_free()
 
 
@@ -212,7 +334,10 @@ func _on_boss_hitbox(body_or_area: Node2D, _hitbox: Area2D) -> void:
 	_hit_players.append(target)
 	target.take_damage(_get_damage_for_attack(_current_attack))
 	if _current_attack == AttackType.WING and target is CharacterBody2D:
-		target.velocity += Vector2(60.0, 0.0)
+		var kb_dir := _aim_direction
+		if kb_dir.length_squared() < 0.01:
+			kb_dir = Vector2.RIGHT.rotated(facing_pivot.rotation)
+		target.velocity += kb_dir * 60.0
 
 
 func _get_windup_time(attack: AttackType) -> float:
@@ -239,20 +364,40 @@ func _get_recover_time(_attack: AttackType) -> float:
 	return 0.8
 
 
-func _play_windup_anim(attack: AttackType) -> void:
-	if not sprite:
-		return
-	var anim_name := ""
-	match attack:
-		AttackType.CLAW:
-			anim_name = "claw"
-		AttackType.TAIL:
-			anim_name = "tail"
-		AttackType.WING:
-			anim_name = "wing"
-		AttackType.FIRE:
-			anim_name = "fire"
-	if anim_name != "" and sprite.sprite_frames.has_animation(anim_name):
-		sprite.play(anim_name)
-	elif sprite.sprite_frames.has_animation("idle"):
+func _set_attack_sprite_visible(show_attack: bool) -> void:
+	if sprite:
+		sprite.visible = not show_attack
+	if attack_sprite:
+		attack_sprite.visible = show_attack
+		if not show_attack:
+			attack_sprite.stop()
+
+
+func _return_to_idle() -> void:
+	_set_attack_sprite_visible(false)
+	if sprite and sprite.sprite_frames.has_animation("idle"):
 		sprite.play("idle")
+
+
+func _play_windup_anim(attack: AttackType) -> void:
+	match attack:
+		AttackType.CLAW, AttackType.FIRE, AttackType.WING:
+			_set_attack_sprite_visible(true)
+			if not attack_sprite:
+				return
+			var attack_anim := ""
+			match attack:
+				AttackType.CLAW:
+					attack_anim = "claw"
+				AttackType.FIRE:
+					attack_anim = "fire"
+				AttackType.WING:
+					attack_anim = "wing"
+			if attack_anim != "" and attack_sprite.sprite_frames.has_animation(attack_anim):
+				attack_sprite.play(attack_anim)
+		AttackType.TAIL:
+			_set_attack_sprite_visible(false)
+			if sprite and sprite.sprite_frames.has_animation("tail"):
+				sprite.play("tail")
+			elif sprite and sprite.sprite_frames.has_animation("idle"):
+				sprite.play("idle")
