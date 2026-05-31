@@ -30,6 +30,13 @@ func _ready() -> void:
 	health_changed.emit(health, max_health)
 	if sprite:
 		sprite.animation_finished.connect(_on_animation_finished)
+	call_deferred("_register_player_collision_exceptions")
+
+
+func _register_player_collision_exceptions() -> void:
+	for node in get_tree().get_nodes_in_group("player"):
+		if node is CharacterBody2D and node != self:
+			add_collision_exception_with(node)
 
 
 func _physics_process(delta: float) -> void:
@@ -195,11 +202,15 @@ func _update_animation() -> void:
 					sprite.play("walk_up")
 				elif sprite.sprite_frames.has_animation("up"):
 					sprite.play("up")
+				elif sprite.sprite_frames.has_animation("walk_side"):
+					sprite.play("walk_side")
 			elif direction.y > 0:
 				if sprite.sprite_frames.has_animation("walk_down"):
 					sprite.play("walk_down")
 				elif sprite.sprite_frames.has_animation("down"):
 					sprite.play("down")
+				elif sprite.sprite_frames.has_animation("walk_side"):
+					sprite.play("walk_side")
 			elif sprite.sprite_frames.has_animation("walk_side"):
 				sprite.play("walk_side")
 

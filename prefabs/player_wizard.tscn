@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c73ekur8losib"]
 
 [ext_resource type="Script" uid="uid://b2s1rscektc3k" path="res://scripts/wizard.gd" id="1_wiz"]
-[ext_resource type="Texture2D" uid="uid://0wvmkuh3j8ph" path="res://sprites/Characters/wizard/Group 5.png" id="2_tex"]
+[ext_resource type="Texture2D" uid="uid://0wvmkuh3j8ph" path="res://sprites/Characters(100x100)/wizard/Group 5.png" id="2_tex"]
 [ext_resource type="Script" uid="uid://jhxcolhdrcgo" path="res://scripts/wand.gd" id="2_wand"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle"]
@@ -106,6 +106,7 @@ height = 18.0
 collision_mask = 3
 script = ExtResource("1_wiz")
 player_id = 1
+max_health = 5000
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=152763092]
 position = Vector2(4.7683716e-07, 0)

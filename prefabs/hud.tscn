@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://6tp6wnw0y2by"]
+
+[ext_resource type="Script" uid="uid://yb7f6ngifhq1" path="res://scripts/hud.gd" id="1_3ehsa"]
+[ext_resource type="Script" uid="uid://p3sh0bq5of70" path="res://scripts/health_bar.gd" id="2_448xx"]
+
+[node name="HUD" type="CanvasLayer" unique_id=282146135]
+script = ExtResource("1_3ehsa")
+
+[node name="lifeplayer1" type="Control" parent="." unique_id=257287894]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 831.0
+offset_top = 7.0
+offset_right = 951.0
+offset_bottom = 17.0
+mouse_filter = 2
+script = ExtResource("2_448xx")
+
+[node name="LabelPlayer" type="Label" parent="lifeplayer1" unique_id=798463964]
+layout_mode = 0
+offset_left = 7.0
+offset_top = -2.0
+offset_right = 23.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "P1"
+vertical_alignment = 1
+
+[node name="BarBackground" type="ColorRect" parent="lifeplayer1" unique_id=1200008400]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+
+[node name="BarFill" type="ColorRect" parent="lifeplayer1/BarBackground" unique_id=1302759444]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 47.0
+offset_bottom = 5.0
+mouse_filter = 2
+color = Color(0.41960785, 0.7490196, 0.34901962, 1)
+
+[node name="LabelPercent" type="Label" parent="lifeplayer1" unique_id=470190367]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 118.0
+offset_bottom = 11.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "100%"
+vertical_alignment = 1
+
+[node name="lifeplayer2" type="Control" parent="." unique_id=764570257]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 831.0
+offset_top = 17.0
+offset_right = 951.0
+offset_bottom = 30.0
+mouse_filter = 2
+script = ExtResource("2_448xx")
+
+[node name="LabelPlayer" type="Label" parent="lifeplayer2" unique_id=907642978]
+layout_mode = 0
+offset_left = 7.0
+offset_top = -2.0
+offset_right = 23.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "P2"
+vertical_alignment = 1
+
+[node name="BarBackground" type="ColorRect" parent="lifeplayer2" unique_id=1724570676]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+
+[node name="BarFill" type="ColorRect" parent="lifeplayer2/BarBackground" unique_id=2128964985]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 47.0
+offset_bottom = 5.0
+mouse_filter = 2
+color = Color(0.41960785, 0.7490196, 0.34901962, 1)
+
+[node name="LabelPercent" type="Label" parent="lifeplayer2" unique_id=1629604089]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 118.0
+offset_bottom = 11.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 8
+text = "100%"
+vertical_alignment = 1
