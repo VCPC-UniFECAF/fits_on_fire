@@ -286,9 +286,12 @@ height = 26.0
 [node name="PlayerWarrior" type="CharacterBody2D" unique_id=592370139 groups=["player"]]
 collision_mask = 3
 script = ExtResource("1_war")
+light_damage = 20
+heavy_damage = 40
 light_hitbox_offset = Vector2(1, 0)
 heavy_hitbox_offset = Vector2(1, 0)
-max_health = 5000
+attack_knockback = 100.0
+max_health = 250
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1984796809]
 position = Vector2(-2.3841858e-07, 0)

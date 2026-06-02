@@ -4,6 +4,7 @@ extends PlayerBase
 @export var heavy_damage: int = 35
 @export var light_hitbox_offset: Vector2 = Vector2(18, 0)
 @export var heavy_hitbox_offset: Vector2 = Vector2(22, 0)
+@export var attack_knockback: float = 30.0
 
 const HITBOX_SCENE := preload("res://prefabs/hitbox.tscn")
 
@@ -17,17 +18,17 @@ func _get_heavy_attack_duration() -> float:
 
 
 func _perform_light_attack() -> void:
-	_spawn_hitbox(light_damage, light_hitbox_offset, 0.2)
+	_spawn_hitbox(light_damage, light_hitbox_offset, 0.2, attack_knockback)
 
 
 func _perform_heavy_attack() -> void:
-	_spawn_hitbox(heavy_damage, heavy_hitbox_offset, 0.35)
+	_spawn_hitbox(heavy_damage, heavy_hitbox_offset, 0.35, attack_knockback)
 
 
-func _spawn_hitbox(dmg: int, offset: Vector2, life: float) -> void:
+func _spawn_hitbox(dmg: int, offset: Vector2, life: float, kb: float) -> void:
 	var hb := HITBOX_SCENE.instantiate()
 	get_parent().add_child(hb)
 	var dir := Vector2.RIGHT if facing_right else Vector2.LEFT
 	hb.rotation = dir.angle()
 	hb.global_position = global_position + offset.rotated(hb.rotation)
-	hb.setup(self, dmg, life, 40.0 if dmg > 20 else 20.0)
+	hb.setup(self, dmg, life, kb)

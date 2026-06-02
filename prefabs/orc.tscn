@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://dhinqg56j8sjl"]
 
-[ext_resource type="Texture2D" uid="uid://nxutym6f1egp" path="res://sprites/Characters(100x100)/Orc/Orc/Orc-Attack01.png" id="1_58vcx"]
+[ext_resource type="Texture2D" uid="uid://nxutym6f1egp" path="res://sprites/Enemies/Orc/Orc/Orc-Attack01.png" id="1_58vcx"]
 [ext_resource type="Script" uid="uid://m6ylfpdsobso" path="res://scripts/orc.gd" id="1_ie1q3"]
-[ext_resource type="Texture2D" uid="uid://dhxq4h0w11yp7" path="res://sprites/Characters(100x100)/Orc/Orc/Orc-Hurt.png" id="2_cvmwg"]
-[ext_resource type="Texture2D" uid="uid://dx008ibwcjvpb" path="res://sprites/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="3_ie1q3"]
-[ext_resource type="Texture2D" uid="uid://cp1elr77t6w6" path="res://sprites/Characters(100x100)/Orc/Orc/Orc-Death.png" id="3_m0qfx"]
-[ext_resource type="Texture2D" uid="uid://ckisiioq0g2wu" path="res://sprites/Characters(100x100)/Orc/Orc/Orc-Walk.png" id="4_m0qfx"]
-[ext_resource type="Script" path="res://scripts/enemy_health_bar.gd" id="5_hbar"]
+[ext_resource type="Texture2D" uid="uid://dhxq4h0w11yp7" path="res://sprites/Enemies/Orc/Orc/Orc-Hurt.png" id="2_cvmwg"]
+[ext_resource type="Texture2D" uid="uid://dx008ibwcjvpb" path="res://sprites/Enemies/Orc/Orc/Orc-Idle.png" id="3_ie1q3"]
+[ext_resource type="Texture2D" uid="uid://cp1elr77t6w6" path="res://sprites/Enemies/Orc/Orc/Orc-Death.png" id="3_m0qfx"]
+[ext_resource type="Texture2D" uid="uid://ckisiioq0g2wu" path="res://sprites/Enemies/Orc/Orc/Orc-Walk.png" id="4_m0qfx"]
+[ext_resource type="Script" uid="uid://eteqnbij02ga" path="res://scripts/enemy_health_bar.gd" id="5_hbar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ylnme"]
 atlas = ExtResource("1_58vcx")
@@ -237,7 +237,7 @@ radius = 8.0
 height = 20.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sword"]
-size = Vector2(14, 9)
+size = Vector2(19, 14)
 
 [node name="orc" type="Area2D" unique_id=304333733 groups=["enemy"]]
 collision_layer = 2
@@ -253,22 +253,30 @@ autoplay = "idle"
 position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_ca3v1")
 
+[node name="BodyCollision" type="StaticBody2D" parent="." unique_id=457207644]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyCollision" unique_id=1324952164]
+position = Vector2(0, -1)
+shape = SubResource("CapsuleShape2D_ca3v1")
+
 [node name="SwordHitbox" type="Area2D" parent="." unique_id=607338320]
 collision_layer = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=1737670359]
-position = Vector2(9, 0.5)
+position = Vector2(11.5, 0)
 shape = SubResource("RectangleShape2D_sword")
 
 [node name="EnemyHealthBar" type="Control" parent="." unique_id=149406007]
 z_index = 10
 layout_mode = 3
 anchors_preset = 0
-offset_left = -13.0
-offset_top = -15.0
-offset_right = -13.0
-offset_bottom = -15.0
+offset_left = -15.0
+offset_top = -17.0
+offset_right = -15.0
+offset_bottom = -17.0
 mouse_filter = 2
 script = ExtResource("5_hbar")
 bar_width = 32

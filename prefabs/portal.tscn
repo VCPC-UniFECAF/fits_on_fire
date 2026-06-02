@@ -13,3 +13,4 @@ script = ExtResource("1_gbxor")
 shape = SubResource("RectangleShape2D_7msn7")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1822846500]
+position = Vector2(29, 0)

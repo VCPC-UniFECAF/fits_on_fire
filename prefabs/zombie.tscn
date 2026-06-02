@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://wdlf3woargk6" path="res://scripts/zombie.gd" id="1_zombie"]
 [ext_resource type="Texture2D" uid="uid://cwapd2yqqebcc" path="res://sprites/Enemies/zombie/zombies.png" id="2_vlph1"]
-[ext_resource type="Script" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
+[ext_resource type="Script" uid="uid://eteqnbij02ga" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kewk0"]
 atlas = ExtResource("2_vlph1")
@@ -27,18 +27,32 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kewk0"]
+radius = 14.0
+height = 36.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_chjal"]
 radius = 11.0
 
 [node name="zombie" type="Area2D" unique_id=336572606 groups=["enemy"]]
 collision_layer = 2
 script = ExtResource("1_zombie")
+contact_damage = 18
+contact_cooldown = 0.5
 knockback_distance = 8.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2045162657]
 sprite_frames = SubResource("SpriteFrames_2cjbq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1073185151]
+shape = SubResource("CapsuleShape2D_kewk0")
+debug_color = Color(0.85370034, 0.32944196, 0.44524097, 0.41960785)
+
+[node name="BodyCollision" type="StaticBody2D" parent="." unique_id=1045921538]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyCollision" unique_id=267966762]
 shape = SubResource("CapsuleShape2D_chjal")
 
 [node name="EnemyHealthBar" type="Control" parent="." unique_id=8837035]

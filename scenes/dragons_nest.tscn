@@ -270,10 +270,10 @@ smooth_speed = 10.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("2_gdhh4")]
-position = Vector2(167, 105)
+position = Vector2(468, 76)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_rwx88")]
-position = Vector2(128, 108)
+position = Vector2(500, 72)
 
 [node name="DragonBoss" parent="." unique_id=1739492798 instance=ExtResource("6_a8adl")]
 position = Vector2(92, 169)

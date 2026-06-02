@@ -1,5 +1,7 @@
 extends Node2D
 
+signal health_changed(current: int, maximum: int)
+
 enum BossState { IDLE, WINDUP, ACTIVE, RECOVER }
 enum AttackType { CLAW, TAIL, WING, FIRE }
 
@@ -42,6 +44,7 @@ var _move_to_idle_timer: float = 0.0
 @onready var wing_hitbox: Area2D = $FacingPivot/WingHitbox
 @onready var fire_hitbox: Area2D = $FacingPivot/FireHitbox
 @onready var hurtbox: Area2D = $FacingPivot/Hurtbox
+@onready var _health_bar: EnemyHealthBar = $HUD/HealthBar
 
 var _hit_players: Array = []
 var _is_dead: bool = false
@@ -51,6 +54,9 @@ func _ready() -> void:
 	add_to_group("boss")
 	add_to_group("enemy")
 	health = max_health
+	health_changed.emit(health, max_health)
+	if _health_bar:
+		_health_bar.bind_host(self)
 	_setup_arena_bounds()
 	_disable_all_hitboxes()
 	for hb in [claw_hitbox, tail_hitbox, wing_hitbox, fire_hitbox]:
@@ -258,6 +264,7 @@ func take_damage(amount: int, _attacker: Node = null, _knockback_force: float = 
 	if _is_dead:
 		return
 	health -= amount
+	health_changed.emit(health, max_health)
 	if health <= 0:
 		_die()
 
@@ -266,6 +273,7 @@ func _die() -> void:
 	if _is_dead:
 		return
 	_is_dead = true
+	health_changed.emit(0, max_health)
 	_disable_all_hitboxes()
 	if sprite:
 		sprite.visible = false

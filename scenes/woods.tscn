@@ -1396,7 +1396,6 @@ tile_map_data = PackedByteArray("AAAGAP3/AAAMAAkAAAAEAP3/AAAMAAkAAAA=")
 tile_set = SubResource("TileSet_pgs45")
 
 [node name="HUD" parent="." unique_id=282146135 instance=ExtResource("1_g0qyw")]
-visible = false
 
 [node name="wise" parent="." unique_id=2104415862 instance=ExtResource("2_ehbw6")]
 position = Vector2(247, 165)
