@@ -1,5 +1,7 @@
 extends Area2D
 
+const WALL_COLLISION_MASK := 1
+
 signal health_changed(current: int, maximum: int)
 
 @export var max_health: int = 100
@@ -9,6 +11,8 @@ signal health_changed(current: int, maximum: int)
 @export var knockback_distance: float = 0.0
 @export var engage_distance: float = 24.0
 @export var flank_offset_x: float = 20.0
+@export var wall_probe_distance: float = 20.0
+@export var wall_avoid_strength: float = 1.5
 
 var health: int
 var velocity: Vector2 = Vector2.ZERO
@@ -67,14 +71,118 @@ func move_chase(delta: float) -> void:
 			if global_position.distance_to(enemy.global_position) < 20.0:
 				push += enemy.global_position.direction_to(global_position)
 
-	var final_direction := (direction + push).normalized()
+	var wall_avoid := _get_wall_avoidance(direction)
+	var combined := direction + push + wall_avoid
+	var final_direction := combined.normalized() if combined.length_squared() > 0.0001 else direction
 	velocity = velocity.lerp(final_direction * speed, 0.1)
 
 	var slot := _get_flank_position(target)
 	if dist_to_player <= engage_distance * 1.5 and global_position.distance_to(slot) < 2.0:
 		velocity.x = lerpf(velocity.x, 0.0, 0.25)
 
-	global_position += velocity * delta
+	_apply_wall_aware_movement(velocity * delta, true)
+
+
+func _get_collision_shape_params() -> PhysicsShapeQueryParameters2D:
+	if not has_node("CollisionShape2D"):
+		return null
+	var col_shape: CollisionShape2D = $CollisionShape2D
+	if col_shape.disabled or col_shape.shape == null:
+		return null
+	var params := PhysicsShapeQueryParameters2D.new()
+	params.shape = col_shape.shape
+	params.transform = col_shape.global_transform
+	params.collision_mask = WALL_COLLISION_MASK
+	params.collide_with_bodies = true
+	params.collide_with_areas = false
+	params.exclude = [get_rid()]
+	return params
+
+
+func _get_wall_avoidance(move_dir: Vector2) -> Vector2:
+	if move_dir.length_squared() < 0.01:
+		return Vector2.ZERO
+	var space := get_world_2d().direct_space_state
+	var avoid := Vector2.ZERO
+	var probe_dir := move_dir.normalized()
+	for angle_offset in [-PI * 0.25, 0.0, PI * 0.25]:
+		var dir := probe_dir.rotated(angle_offset)
+		var query := PhysicsRayQueryParameters2D.create(
+			global_position,
+			global_position + dir * wall_probe_distance
+		)
+		query.collision_mask = WALL_COLLISION_MASK
+		query.exclude = [get_rid()]
+		var hit := space.intersect_ray(query)
+		if not hit.is_empty():
+			avoid += hit.normal * wall_avoid_strength
+	return avoid
+
+
+func _get_wall_normal_at_motion(motion: Vector2) -> Vector2:
+	if motion.is_zero_approx():
+		return Vector2.ZERO
+	var space := get_world_2d().direct_space_state
+	var params := _get_collision_shape_params()
+	if params != null:
+		params.motion = motion
+		var rest: Dictionary = space.get_rest_info(params)
+		if not rest.is_empty() and rest.has("normal"):
+			return rest["normal"]
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position,
+		global_position + motion.normalized() * wall_probe_distance
+	)
+	query.collision_mask = WALL_COLLISION_MASK
+	query.exclude = [get_rid()]
+	var hit := space.intersect_ray(query)
+	if not hit.is_empty():
+		return hit.normal
+	return Vector2.ZERO
+
+
+func _apply_wall_aware_movement(motion: Vector2, update_velocity_on_hit: bool) -> void:
+	if motion.is_zero_approx():
+		return
+	var params := _get_collision_shape_params()
+	if params == null:
+		global_position += motion
+		return
+
+	var space := get_world_2d().direct_space_state
+	var col_shape: CollisionShape2D = $CollisionShape2D
+
+	params.transform = col_shape.global_transform
+	params.motion = motion
+	var result := space.cast_motion(params)
+	var safe_fraction: float = result[0]
+	global_position += motion * safe_fraction
+
+	if safe_fraction >= 1.0:
+		return
+
+	var wall_normal := _get_wall_normal_at_motion(motion)
+	if wall_normal.is_zero_approx():
+		return
+
+	if update_velocity_on_hit:
+		velocity = velocity.slide(wall_normal)
+
+	var remainder := motion * (1.0 - safe_fraction)
+	var slide_motion := remainder.slide(wall_normal)
+	if slide_motion.is_zero_approx():
+		return
+
+	params.transform = col_shape.global_transform
+	params.motion = slide_motion
+	result = space.cast_motion(params)
+	safe_fraction = result[0]
+	global_position += slide_motion * safe_fraction
+
+	if safe_fraction < 1.0 and update_velocity_on_hit:
+		var wall_normal2 := _get_wall_normal_at_motion(slide_motion)
+		if not wall_normal2.is_zero_approx():
+			velocity = velocity.slide(wall_normal2)
 
 
 func _get_nearest_player() -> Node2D:
@@ -105,7 +213,7 @@ func take_damage(amount: int, _attacker: Node = null, knockback_force: float = 0
 	health_changed.emit(health, max_health)
 	if knockback_force > 0.0 and _attacker is Node2D:
 		var kb_dir := global_position.direction_to(_attacker.global_position) * -1.0
-		global_position += kb_dir * knockback_force * 0.05
+		_apply_wall_aware_movement(kb_dir * knockback_force * 0.05, false)
 	if has_node("AnimationPlayer"):
 		$AnimationPlayer.play("hit")
 	if health <= 0:
@@ -123,6 +231,8 @@ func die() -> void:
 		sprite.play("die")
 	if has_node("CollisionShape2D"):
 		$CollisionShape2D.set_deferred("disabled", true)
+	if has_node("BodyCollision/CollisionShape2D"):
+		$BodyCollision/CollisionShape2D.set_deferred("disabled", true)
 	await get_tree().create_timer(1.0).timeout
 	queue_free()
 

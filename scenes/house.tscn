@@ -1198,16 +1198,16 @@ scale = Vector2(1.0588236, 1)
 polygon = PackedVector2Array(248, 39, 247.99998, 64, 265, 64, 265, 39)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=282146135]
+visible = false
 script = ExtResource("1_hud")
 
 [node name="lifeplayer1" type="Control" parent="HUD" unique_id=257287894]
-visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = 200.0
-offset_top = 2.0
-offset_right = 320.0
-offset_bottom = 12.0
+offset_left = 837.0
+offset_top = 5.0
+offset_right = 957.0
+offset_bottom = 15.0
 mouse_filter = 2
 script = ExtResource("2_hbar")
 
@@ -1256,13 +1256,12 @@ text = "100%"
 vertical_alignment = 1
 
 [node name="lifeplayer2" type="Control" parent="HUD" unique_id=764570257]
-visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = 200.0
-offset_top = 12.0
-offset_right = 320.0
-offset_bottom = 22.0
+offset_left = 837.0
+offset_top = 15.0
+offset_right = 957.0
+offset_bottom = 25.0
 mouse_filter = 2
 script = ExtResource("2_hbar")
 

@@ -99,23 +99,26 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wiz"]
-radius = 6.0
-height = 18.0
+radius = 7.0
+height = 26.0
 
 [node name="PlayerWizard" type="CharacterBody2D" unique_id=1739035420 groups=["player"]]
 collision_mask = 3
 script = ExtResource("1_wiz")
+light_damage = 10
+heavy_damage = 25
 player_id = 1
-max_health = 5000
+max_health = 150
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=152763092]
 position = Vector2(4.7683716e-07, 0)
-scale = Vector2(0.56249994, 0.56249994)
+scale = Vector2(0.875, 0.87500006)
 sprite_frames = SubResource("SpriteFrames_wiz")
 animation = &"side"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1731426044]
+position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_wiz")
 
 [node name="wand" type="Node2D" parent="." unique_id=889075565]

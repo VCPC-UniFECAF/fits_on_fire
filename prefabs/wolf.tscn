@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dxoxeg0p6w2jq" path="res://scripts/wolf.gd" id="1_wolf"]
 [ext_resource type="Texture2D" uid="uid://dme76l65fxi56" path="res://sprites/Enemies/humanwolf/wolf.png" id="2_tex"]
-[ext_resource type="Script" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
+[ext_resource type="Script" uid="uid://eteqnbij02ga" path="res://scripts/enemy_health_bar.gd" id="3_hbar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wolf"]
 atlas = ExtResource("2_tex")
@@ -53,6 +53,13 @@ sprite_frames = SubResource("SpriteFrames_wmcfj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=435069299]
 shape = SubResource("CapsuleShape2D_body")
 
+[node name="BodyCollision" type="StaticBody2D" parent="." unique_id=1763647022]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyCollision" unique_id=1744675772]
+shape = SubResource("CapsuleShape2D_body")
+
 [node name="SwordHitbox" type="Area2D" parent="." unique_id=1776541287]
 collision_layer = 0
 monitoring = false
@@ -65,9 +72,9 @@ shape = SubResource("RectangleShape2D_sword")
 z_index = 10
 layout_mode = 3
 anchors_preset = 0
-offset_left = -15.0
+offset_left = -14.0
 offset_top = -25.0
-offset_right = -15.0
+offset_right = -14.0
 offset_bottom = -25.0
 mouse_filter = 2
 script = ExtResource("3_hbar")

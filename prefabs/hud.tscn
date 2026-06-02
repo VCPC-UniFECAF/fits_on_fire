@@ -15,48 +15,51 @@ offset_right = 951.0
 offset_bottom = 17.0
 mouse_filter = 2
 script = ExtResource("2_448xx")
+bar_width = 121
+bar_height = 17
+fill_inset = 2
 
 [node name="LabelPlayer" type="Label" parent="lifeplayer1" unique_id=798463964]
 layout_mode = 0
-offset_left = 7.0
-offset_top = -2.0
-offset_right = 23.0
-offset_bottom = 10.0
+offset_left = -95.0
+offset_top = -6.0
+offset_right = -65.0
+offset_bottom = 29.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
 text = "P1"
 vertical_alignment = 1
 
 [node name="BarBackground" type="ColorRect" parent="lifeplayer1" unique_id=1200008400]
 layout_mode = 0
-offset_left = 18.0
+offset_left = -59.0
 offset_top = 2.0
-offset_right = 66.0
-offset_bottom = 8.0
+offset_right = 62.0
+offset_bottom = 19.0
 mouse_filter = 2
-color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+color = Color(0, 0, 0, 1)
 
 [node name="BarFill" type="ColorRect" parent="lifeplayer1/BarBackground" unique_id=1302759444]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 1.0
-offset_right = 47.0
-offset_bottom = 5.0
+offset_right = 120.0
+offset_bottom = 16.0
 mouse_filter = 2
 color = Color(0.41960785, 0.7490196, 0.34901962, 1)
 
 [node name="LabelPercent" type="Label" parent="lifeplayer1" unique_id=470190367]
 layout_mode = 0
-offset_left = 68.0
-offset_top = -1.0
-offset_right = 118.0
-offset_bottom = 11.0
+offset_left = 67.0
+offset_top = -7.0
+offset_right = 117.0
+offset_bottom = 15.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
 text = "100%"
 vertical_alignment = 1
 
@@ -69,47 +72,51 @@ offset_right = 951.0
 offset_bottom = 30.0
 mouse_filter = 2
 script = ExtResource("2_448xx")
+bar_width = 119
+bar_height = 17
+fill_inset = 2
 
 [node name="LabelPlayer" type="Label" parent="lifeplayer2" unique_id=907642978]
 layout_mode = 0
-offset_left = 7.0
-offset_top = -2.0
-offset_right = 23.0
-offset_bottom = 10.0
+offset_left = -95.0
+offset_top = 19.0
+offset_right = -65.0
+offset_bottom = 54.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
 text = "P2"
 vertical_alignment = 1
 
 [node name="BarBackground" type="ColorRect" parent="lifeplayer2" unique_id=1724570676]
 layout_mode = 0
-offset_left = 18.0
-offset_top = 2.0
-offset_right = 66.0
-offset_bottom = 8.0
+offset_left = -59.0
+offset_top = 28.0
+offset_right = 62.0
+offset_bottom = 45.0
 mouse_filter = 2
-color = Color(0.23921569, 0.15686275, 0.09019608, 1)
+color = Color(0, 0, 0, 1)
 
 [node name="BarFill" type="ColorRect" parent="lifeplayer2/BarBackground" unique_id=2128964985]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 1.0
-offset_right = 47.0
-offset_bottom = 5.0
+offset_right = 120.0
+offset_bottom = 16.0
 mouse_filter = 2
 color = Color(0.41960785, 0.7490196, 0.34901962, 1)
 
 [node name="LabelPercent" type="Label" parent="lifeplayer2" unique_id=1629604089]
 layout_mode = 0
-offset_left = 68.0
-offset_top = -1.0
-offset_right = 118.0
-offset_bottom = 11.0
+offset_left = 67.0
+offset_top = 18.0
+offset_right = 131.0
+offset_bottom = 53.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_font_sizes/font_size = 25
 text = "100%"
 vertical_alignment = 1

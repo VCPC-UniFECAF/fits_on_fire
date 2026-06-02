@@ -4,7 +4,7 @@ class_name HealthBar
 const COLOR_FILL_HEALTHY := Color("#6bbf59")
 const COLOR_FILL_CRITICAL := Color("#c44b33")
 const COLOR_BG := Color("#1a1208")
-const COLOR_BORDER := Color("#3d2817")
+const COLOR_BORDER := Color("000000ff")
 const CRITICAL_THRESHOLD := 0.3
 const TWEEN_DURATION := 0.25
 

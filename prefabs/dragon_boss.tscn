@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dnwsaltwm2wgy" path="res://sprites/Enemies/dragon/claw.png" id="4_scauy"]
 [ext_resource type="Texture2D" uid="uid://c0d3cmju3fre" path="res://sprites/Enemies/dragon/death.png" id="5_i0bw5"]
 [ext_resource type="Texture2D" uid="uid://nfti1aqk6xj3" path="res://sprites/Enemies/dragon/fire.png" id="6_phdmq"]
+[ext_resource type="Script" uid="uid://eteqnbij02ga" path="res://scripts/enemy_health_bar.gd" id="9_phdmq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hurt"]
 radius = 68.0
@@ -353,6 +354,7 @@ size = Vector2(174, 98.5)
 
 [node name="DragonBoss" type="Node2D" unique_id=1739492798 groups=["boss", "enemy"]]
 script = ExtResource("1_dragon")
+max_health = 1000
 stop_distance = 200.0
 
 [node name="BodyCollision" type="StaticBody2D" parent="." unique_id=412334572]
@@ -416,3 +418,19 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FacingPivot/FireHitbox" unique_id=1752263836]
 position = Vector2(147, 22.75)
 shape = SubResource("RectangleShape2D_fire")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1669945459]
+
+[node name="HealthBar" type="Control" parent="HUD" unique_id=1933262682]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 22.0
+offset_top = 479.0
+offset_right = 940.0
+offset_bottom = 519.0
+mouse_filter = 2
+script = ExtResource("9_phdmq")
+bar_width = 910
+bar_height = 28
+border_width = 2
+metadata/_custom_type_script = "uid://eteqnbij02ga"
