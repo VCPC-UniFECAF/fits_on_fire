@@ -31,13 +31,19 @@ func _perform_light_attack() -> void:
 
 
 func _perform_heavy_attack() -> void:
-	_spawn_projectile(heavy_damage, heavy_projectile_speed, 2.0, 14.0, 5)
+	_spawn_projectile(
+		get_scaled_damage(heavy_damage),
+		heavy_projectile_speed, 2.0, 14.0, 5
+	)
 
 
 func _spawn_light_burst() -> void:
 	for i in light_projectile_count:
 		get_tree().create_timer(light_projectile_interval * i).timeout.connect(
-			_spawn_projectile.bind(light_damage, light_projectile_speed, 0.8, 10.0, 1)
+			_spawn_projectile.bind(
+				get_scaled_damage(light_damage),
+				light_projectile_speed, 0.8, 10.0, 1
+			)
 		)
 
 

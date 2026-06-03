@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ct0he7y1213ee"]
+
+[ext_resource type="Script" uid="uid://bnxipik08jk4w" path="res://scripts/heal_potion.gd" id="1_vcwwv"]
+[ext_resource type="Texture2D" uid="uid://bubiaotcm1gds" path="res://sprites/scenerios/cave/Dungeon_Tileset.png" id="2_mpgp7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_85g3d"]
+radius = 16.0
+
+[node name="healPotion" type="Area2D" unique_id=1691048370]
+script = ExtResource("1_vcwwv")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1299321979]
+scale = Vector2(2.1333334, 2.1333334)
+texture = ExtResource("2_mpgp7")
+region_enabled = true
+region_rect = Rect2(144.55637, 128.11462, 15.443634, 15.602325)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=652258130]
+shape = SubResource("CircleShape2D_85g3d")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

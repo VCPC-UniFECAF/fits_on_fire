@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://br1hhvpf40oik"]
 
 [ext_resource type="PackedScene" uid="uid://cmppiquxqyap6" path="res://prefabs/player_warrior.tscn" id="1_warrior"]
-[ext_resource type="PackedScene" uid="uid://dy6hiio5asvgp" path="res://prefabs/dragon_boss.tscn" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://6tp6wnw0y2by" path="res://prefabs/hud.tscn" id="7_o6xl0"]
 
 [node name="main" type="Node2D" unique_id=155895530]
 position = Vector2(0, 1)
@@ -15,5 +15,4 @@ heavy_hitbox_offset = Vector2(0, 0)
 [node name="PlayerWizard" parent="." unique_id=619765013 instance=ExtResource("3_sugp2")]
 position = Vector2(-2, 198)
 
-[node name="DragonBoss" parent="." unique_id=1739492798 instance=ExtResource("3_jyhfs")]
-position = Vector2(4, 81)
+[node name="HUD" parent="." unique_id=282146135 instance=ExtResource("7_o6xl0")]
