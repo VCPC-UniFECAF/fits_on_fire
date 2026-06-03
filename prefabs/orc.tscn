@@ -233,11 +233,10 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ca3v1"]
-radius = 8.0
-height = 20.0
+height = 28.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sword"]
-size = Vector2(19, 14)
+size = Vector2(27, 16)
 
 [node name="orc" type="Area2D" unique_id=304333733 groups=["enemy"]]
 collision_layer = 2
@@ -245,6 +244,7 @@ script = ExtResource("1_ie1q3")
 knockback_distance = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1320383920]
+scale = Vector2(1.46, 1.46)
 sprite_frames = SubResource("SpriteFrames_dp00a")
 animation = &"attack"
 autoplay = "idle"

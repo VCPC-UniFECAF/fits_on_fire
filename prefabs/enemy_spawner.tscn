@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://vwasfasul6p1"]
+
+[ext_resource type="Script" uid="uid://bbyrsk2j421wa" path="res://scripts/enemy_spawner.gd" id="1_uat6r"]
+[ext_resource type="Script" uid="uid://cuu8421w3ywf1" path="res://scripts/wave_config.gd" id="2_xvh53"]
+[ext_resource type="PackedScene" uid="uid://qyniyirbenwr" path="res://prefabs/zombie.tscn" id="4_gm7xq"]
+[ext_resource type="Script" uid="uid://ug8gx086wya" path="res://scripts/activate_spawn.gd" id="5_xcv86"]
+[ext_resource type="Script" uid="uid://c4spawnpoint1" path="res://scripts/spawn_point.gd" id="6_2hx67"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_do11t"]
+size = Vector2(21, 340)
+
+[node name="EnemySpawner" type="Node2D" unique_id=1404094185]
+script = ExtResource("1_uat6r")
+waves = Array[ExtResource("2_xvh53")]([null])
+
+[node name="ActivateSpawn" type="Area2D" parent="." unique_id=372345044]
+collision_layer = 0
+script = ExtResource("5_xcv86")
+spawner_path = NodePath("..")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActivateSpawn" unique_id=1215383080]
+shape = SubResource("RectangleShape2D_do11t")
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=1365671346]
+position = Vector2(18, 69)
+gizmo_extents = 0.0
+script = ExtResource("6_2hx67")
+enemy_scene_override = ExtResource("4_gm7xq")
+
+[node name="SpawnPoint2" type="Marker2D" parent="." unique_id=1201696736]
+position = Vector2(-21, 73)
+gizmo_extents = 0.0
+script = ExtResource("6_2hx67")
+enemy_scene_override = ExtResource("4_gm7xq")
+
+[node name="SpawnPoint3" type="Marker2D" parent="." unique_id=39498887]
+position = Vector2(-1, 77)
+gizmo_extents = 0.0
+script = ExtResource("6_2hx67")
+enemy_scene_override = ExtResource("4_gm7xq")

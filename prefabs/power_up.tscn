@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bubiaotcm1gds" path="res://sprites/scenerios/cave/Dungeon_Tileset.png" id="2_egr8w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tipki"]
-radius = 17.117243
+radius = 5.0
 
 [node name="powerUp" type="Area2D" unique_id=359951056]
 script = ExtResource("1_4qedv")
@@ -12,7 +12,7 @@ metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=323287742]
 position = Vector2(-0.25, 0.09615326)
-scale = Vector2(1.6538461, 1.6538461)
+scale = Vector2(0.80769235, 0.80769265)
 texture = ExtResource("2_egr8w")
 region_enabled = true
 region_rect = Rect2(113.18571, 144.88747, 13.614227, 15.062546)

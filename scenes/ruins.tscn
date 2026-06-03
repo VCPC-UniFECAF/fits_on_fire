@@ -6,14 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="3_jc2if"]
 [ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="4_5e6vo"]
 [ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="5_ansty"]
-[ext_resource type="PackedScene" uid="uid://chv4t5k5uhfc7" path="res://prefabs/activate_spawn.tscn" id="6_bit6c"]
 [ext_resource type="Texture2D" uid="uid://cgm5464swlbx" path="res://sprites/scenerios/ruins/Texture/TX Tileset Grass.png" id="6_k2k6q"]
 [ext_resource type="Texture2D" uid="uid://wm2fr64g2cxh" path="res://sprites/scenerios/ruins/Texture/TX Struct.png" id="7_0oy4v"]
-[ext_resource type="PackedScene" uid="uid://spawnpoint01" path="res://prefabs/spawn_point.tscn" id="8_0oy4v"]
 [ext_resource type="Texture2D" uid="uid://wg2768i1pncg" path="res://sprites/scenerios/ruins/Texture/TX Tileset Stone Ground.png" id="8_258ns"]
 [ext_resource type="Texture2D" uid="uid://swr5cwkiq063" path="res://sprites/scenerios/ruins/Texture/TX Tileset Wall.png" id="9_rv0xs"]
-[ext_resource type="PackedScene" uid="uid://ctee5g4e8kjf2" path="res://prefabs/portal.tscn" id="13_258ns"]
+[ext_resource type="Script" uid="uid://o3i3f5gtkxgh" path="res://scripts/portal.gd" id="11_pgqpv"]
+[ext_resource type="Script" uid="uid://bbyrsk2j421wa" path="res://scripts/enemy_spawner.gd" id="12_f0s6k"]
+[ext_resource type="Script" uid="uid://cuu8421w3ywf1" path="res://scripts/wave_config.gd" id="13_pgqpv"]
 [ext_resource type="PackedScene" uid="uid://dhinqg56j8sjl" path="res://prefabs/orc.tscn" id="14_258ns"]
+[ext_resource type="Script" uid="uid://cp6v3mrbk6a7x" path="res://scripts/wave_spawn_entry.gd" id="14_x8oxx"]
+[ext_resource type="Script" uid="uid://ug8gx086wya" path="res://scripts/activate_spawn.gd" id="16_7geku"]
+[ext_resource type="Script" uid="uid://c4spawnpoint1" path="res://scripts/spawn_point.gd" id="17_4o3qg"]
+[ext_resource type="PackedScene" uid="uid://ct0he7y1213ee" path="res://prefabs/heal_potion.tscn" id="18_pgqpv"]
+[ext_resource type="PackedScene" uid="uid://ch7t45gc0sq7h" path="res://prefabs/power_up.tscn" id="19_x8oxx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2gxg2"]
 texture = ExtResource("1_6xbwe")
@@ -212,11 +217,10 @@ margins = Vector2i(6, 14)
 39:2/0 = 0
 39:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -0.60936165, 3.3950138, -0.08705139, 8, -0.26115417)
 40:2/0 = 0
-40:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -0.60936165, 3.3950138, -0.08705139, 8, -0.26115417)
+40:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-0.17985916, -8, -8, -8, -8, -0.35971642, 0, -0.5395756)
 41:2/0 = 0
-41:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -0.60936165, 3.3950138, -0.08705139, 8, -0.26115417)
 42:2/0 = 0
-42:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -0.60936165, 3.3950138, -0.08705139, 8, -0.26115417)
+42:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0.17985916, -8, 8, -8, 8, -0.35971642, 0, -0.5395756)
 43:2/0 = 0
 43:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -8, -0.60936165, 3.3950138, -0.08705139, 8, -0.26115417)
 44:2/0 = 0
@@ -2889,7 +2893,7 @@ margins = Vector2i(6, 14)
 10:32/0 = 0
 11:32/0 = 0
 12:32/0 = 0
-12:32/0/physics_layer_0/polygon_0/points = PackedVector2Array(-0.78346443, -0.78346443, 8, -4.9619427, 8, 8, -8, 8, -0.08705139, 3.917324)
+12:32/0/physics_layer_0/polygon_0/points = PackedVector2Array(0.8992939, 2.8777409, 0, -1.2590103, 8, -4.3166084, 8, 2.6978817, 3.956892, 2.6978817)
 13:32/0 = 0
 13:32/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -5.3101482, -8, -5.484251, -0.43525887, -8, 8, -8, 8, -8, 8, -6.0065613, -8, 1.828085)
 14:32/0 = 0
@@ -2992,7 +2996,6 @@ margins = Vector2i(6, 14)
 10:33/0 = 0
 11:33/0 = 0
 12:33/0 = 0
-12:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -3.9173222, 1.4798775, 2.1762905, -8, -1.6539803)
 13:33/0 = 0
 14:33/0 = 0
 15:33/0 = 0
@@ -5585,9 +5588,7 @@ margins = Vector2i(6, 14)
 30:60/0 = 0
 31:60/0 = 0
 32:60/0 = 0
-32:60/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2.661909, 0.791378, 1.9424744, -4.6763268, 8, -4.8202133, 8, 6.6907444, 1.5108128, 6.4029713)
 33:60/0 = 0
-33:60/0/physics_layer_0/polygon_0/points = PackedVector2Array(-6.4029703, -8, -1.6547003, -8, -1.0791531, -4.6763268, 8, -4.964101, 8, 8, -8, 8, -8, -4.964101)
 34:60/0 = 0
 35:60/0 = 0
 36:60/0 = 0
@@ -5669,7 +5670,6 @@ margins = Vector2i(6, 14)
 31:61/0 = 0
 32:61/0 = 0
 33:61/0 = 0
-33:61/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -0.9352646, -8, -0.9352646, 6.6907444, -8, 8)
 34:61/0 = 0
 35:61/0 = 0
 36:61/0 = 0
@@ -8511,6 +8511,34 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_k2k6q")
 sources/1 = SubResource("TileSetAtlasSource_0oy4v")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
+size = Vector2(46, 87)
+
+[sub_resource type="Resource" id="Resource_nllk3"]
+script = ExtResource("14_x8oxx")
+enemy_scene = ExtResource("14_258ns")
+count = 11
+metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
+
+[sub_resource type="Resource" id="Resource_jam8s"]
+script = ExtResource("13_pgqpv")
+entries = Array[ExtResource("14_x8oxx")]([SubResource("Resource_nllk3")])
+metadata/_custom_type_script = "uid://cuu8421w3ywf1"
+
+[sub_resource type="Resource" id="Resource_hyi7h"]
+script = ExtResource("14_x8oxx")
+enemy_scene = ExtResource("14_258ns")
+count = 8
+metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
+
+[sub_resource type="Resource" id="Resource_i5q2e"]
+script = ExtResource("13_pgqpv")
+entries = Array[ExtResource("14_x8oxx")]([SubResource("Resource_hyi7h")])
+metadata/_custom_type_script = "uid://cuu8421w3ywf1"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pgqpv"]
+size = Vector2(189, 18.796875)
+
 [node name="ruins" type="Node2D" unique_id=647767057]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1731824287]
@@ -8532,10 +8560,10 @@ smooth_speed = 10.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("2_ansty")]
-position = Vector2(511, -227)
+position = Vector2(517, -244)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_jc2if")]
-position = Vector2(605, -228)
+position = Vector2(590, -248)
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=1283937772]
 tile_map_data = PackedByteArray("AAArAAYAAQAdAAkAAAAmAAUAAQAYAAgAAAAmAAYAAQAYAAkAAAAmAAcAAQAYAAoAAAAmAAgAAQAYAAsAAAAnAAUAAQAZAAgAAAAnAAYAAQAZAAkAAAAnAAcAAQAZAAoAAAAnAAgAAQAZAAsAAAAoAAUAAQAaAAgAAAAoAAYAAQAaAAkAAAAoAAcAAQAaAAoAAAAoAAgAAQAaAAsAAAApAAUAAQAbAAgAAAApAAYAAQAbAAkAAAApAAcAAQAbAAoAAAApAAgAAQAbAAsAAAAqAAUAAQAcAAgAAAAqAAYAAQAcAAkAAAAqAAcAAQAcAAoAAAAqAAgAAQAcAAsAAAArAAUAAQAdAAgAAAArAAcAAQAdAAoAAAArAAgAAQAdAAsAAAAmAAIAAAAFAAkAAAAmAAMAAAAFAAkAAAAnAAMAAAAPAAoAAAAoAAMAAAAOAAkAAAApAAMAAAAMAAkAAAAqAAMAAAAFAA0AAAAqAAIAAAAFAA0AAAApAAIAAAAAAAwAAAAoAAIAAAAMAAkAAAAnAAIAAAAKAAoAAAAmAAQAAAABAA8AAAAnAAQAAAABAA8AAAAoAAQAAAABAA8AAAApAAQAAAABAA8AAAAqAAQAAAABAA8AAAAmAAEAAAABAA8AAAAnAAEAAAABAA8AAAAoAAEAAAABAA8AAAApAAEAAAABAA8AAAAqAAEAAAABAA8AAAAgAOn/AQAYAAgAAAAgAOr/AQAYAAkAAAAgAOv/AQAYAAoAAAAgAOz/AQAYAAsAAAAhAOn/AQAZAAgAAAAhAOr/AQAZAAkAAAAhAOv/AQAZAAoAAAAhAOz/AQAZAAsAAAAiAOn/AQAaAAgAAAAiAOr/AQAaAAkAAAAiAOv/AQAaAAoAAAAiAOz/AQAaAAsAAAAjAOn/AQAbAAgAAAAjAOr/AQAbAAkAAAAjAOv/AQAbAAoAAAAjAOz/AQAbAAsAAAAkAOn/AQAcAAgAAAAkAOr/AQAcAAkAAAAkAOv/AQAcAAoAAAAkAOz/AQAcAAsAAAA=")
@@ -8547,39 +8575,113 @@ tile_map_data = PackedByteArray("AAAmAAEAAAAJAAgAAAAnAAEAAAALAAgAAAAoAAEAAAAMAAg
 tile_set = SubResource("TileSet_258ns")
 
 [node name="wise" parent="." unique_id=686177478 instance=ExtResource("5_ansty")]
-position = Vector2(555, -257)
+position = Vector2(554, -235)
 fase_atual = 4
 
-[node name="SpawnPoint" parent="." unique_id=1359721585 instance=ExtResource("8_0oy4v")]
-position = Vector2(52, 148)
-gizmo_extents = 0.0
-
-[node name="ActivateSpawn" parent="." unique_id=1721014499 instance=ExtResource("6_bit6c")]
-position = Vector2(206, 81)
-
-[node name="portal" parent="." unique_id=1054975535 instance=ExtResource("13_258ns")]
+[node name="portal" type="Area2D" parent="." unique_id=1054975535]
 position = Vector2(555, -306)
+collision_layer = 0
+script = ExtResource("11_pgqpv")
+next_level_path = "res://scenes/woods.tscn"
 portal_id = "ruins_to_woods"
 destination_portal_id = "woods_to_ruins"
-next_level_path = "res://scenes/woods.tscn"
 
-[node name="PlayerSpawn" parent="portal" index="1"]
-position = Vector2(0, 48)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="orc" parent="." unique_id=304333733 instance=ExtResource("14_258ns")]
-position = Vector2(543, -99)
+[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(-1, 160)
 
-[node name="orc2" parent="." unique_id=1360673542 instance=ExtResource("14_258ns")]
-position = Vector2(210, 179)
+[node name="healPotion" parent="." unique_id=1691048370 instance=ExtResource("18_pgqpv")]
+position = Vector2(832, 589)
 
-[node name="orc3" parent="." unique_id=1631417706 instance=ExtResource("14_258ns")]
-position = Vector2(596, 311)
+[node name="healPotion2" parent="." unique_id=1954305657 instance=ExtResource("18_pgqpv")]
+position = Vector2(71, 136)
 
-[node name="orc4" parent="." unique_id=556356933 instance=ExtResource("14_258ns")]
-position = Vector2(428, 264)
+[node name="healPotion3" parent="." unique_id=108039305 instance=ExtResource("18_pgqpv")]
+position = Vector2(857, 338)
 
-[node name="orc5" parent="." unique_id=705681506 instance=ExtResource("14_258ns")]
-position = Vector2(689, 53)
+[node name="powerUp" parent="." unique_id=359951056 instance=ExtResource("19_x8oxx")]
+position = Vector2(129, 548)
 
-[node name="orc6" parent="." unique_id=1332832132 instance=ExtResource("14_258ns")]
-position = Vector2(755, 268)
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=1748996893]
+position = Vector2(554, -196)
+script = ExtResource("12_f0s6k")
+waves = Array[ExtResource("13_pgqpv")]([SubResource("Resource_jam8s"), SubResource("Resource_i5q2e")])
+
+[node name="ActivateSpawn" type="Area2D" parent="EnemySpawner" unique_id=1476353311]
+collision_layer = 0
+script = ExtResource("16_7geku")
+spawner_path = NodePath("..")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawner/ActivateSpawn" unique_id=1897054720]
+position = Vector2(-0.5, -1.6015625)
+shape = SubResource("RectangleShape2D_pgqpv")
+
+[node name="SpawnPoint" type="Marker2D" parent="EnemySpawner" unique_id=559591917]
+position = Vector2(174, 139)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint2" type="Marker2D" parent="EnemySpawner" unique_id=1470068430]
+position = Vector2(-174, 69)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint3" type="Marker2D" parent="EnemySpawner" unique_id=1684300367]
+position = Vector2(5, 116)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint4" type="Marker2D" parent="EnemySpawner" unique_id=31463647]
+position = Vector2(344, 424)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint5" type="Marker2D" parent="EnemySpawner" unique_id=574232323]
+position = Vector2(-142, 455)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint6" type="Marker2D" parent="EnemySpawner" unique_id=465567361]
+position = Vector2(39, 588)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint7" type="Marker2D" parent="EnemySpawner" unique_id=1405253275]
+position = Vector2(264, 813)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint8" type="Marker2D" parent="EnemySpawner" unique_id=450562150]
+position = Vector2(86, 895)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint9" type="Marker2D" parent="EnemySpawner" unique_id=711069384]
+position = Vector2(-186, 836)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint10" type="Marker2D" parent="EnemySpawner" unique_id=1798196110]
+position = Vector2(-410, 786)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")
+
+[node name="SpawnPoint11" type="Marker2D" parent="EnemySpawner" unique_id=1731519497]
+position = Vector2(-481, 431)
+gizmo_extents = 0.0
+script = ExtResource("17_4o3qg")
+enemy_scene_override = ExtResource("14_258ns")

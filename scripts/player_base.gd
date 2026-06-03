@@ -162,9 +162,9 @@ func take_damage(amount: int, attacker: Node = null, knockback_distance: float =
 func heal(amount: int) -> void:
 	if state == State.DEAD:
 		return
-		
-		health = mini(health + amount, max_health)
-		health_changed.emit(health, max_health)
+
+	health = mini(health + amount, max_health)
+	health_changed.emit(health, max_health)
 pass
 
 func heal_to_full() -> void:

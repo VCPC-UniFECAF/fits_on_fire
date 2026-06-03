@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="4_gdhh4"]
 [ext_resource type="PackedScene" uid="uid://dy6hiio5asvgp" path="res://prefabs/dragon_boss.tscn" id="6_a8adl"]
 [ext_resource type="PackedScene" uid="uid://ctee5g4e8kjf2" path="res://prefabs/portal.tscn" id="7_g0oq3"]
+[ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="8_wise"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a8adl"]
 texture = ExtResource("1_rwx88")
@@ -276,10 +277,15 @@ position = Vector2(468, 76)
 position = Vector2(500, 72)
 
 [node name="DragonBoss" parent="." unique_id=1739492798 instance=ExtResource("6_a8adl")]
-position = Vector2(92, 169)
+position = Vector2(67, 207)
+
+[node name="wise" parent="." unique_id=28598043 instance=ExtResource("8_wise")]
+position = Vector2(555, 308)
+fase_atual = 6
+bloqueado_ate_dragao_derrotado = true
 
 [node name="portal" parent="." unique_id=1054975535 instance=ExtResource("7_g0oq3")]
 position = Vector2(487, 26)
+next_level_path = "res://scenes/cave.tscn"
 portal_id = "nest_to_cave"
 destination_portal_id = "cave_to_nest"
-next_level_path = "res://scenes/cave.tscn"

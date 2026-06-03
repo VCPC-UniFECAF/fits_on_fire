@@ -11,6 +11,13 @@
 [ext_resource type="Texture2D" uid="uid://cyu26b0kda88h" path="res://sprites/scenerios/ruins/Texture/TX Plant.png" id="4_j3csf"]
 [ext_resource type="Script" uid="uid://o3i3f5gtkxgh" path="res://scripts/portal.gd" id="10_ercsu"]
 [ext_resource type="PackedScene" uid="uid://com4mxrdnmdeb" path="res://prefabs/wolf.tscn" id="11_ercsu"]
+[ext_resource type="Script" uid="uid://bbyrsk2j421wa" path="res://scripts/enemy_spawner.gd" id="11_pyn53"]
+[ext_resource type="Script" uid="uid://cuu8421w3ywf1" path="res://scripts/wave_config.gd" id="12_uwbj1"]
+[ext_resource type="Script" uid="uid://ug8gx086wya" path="res://scripts/activate_spawn.gd" id="13_i1j6r"]
+[ext_resource type="Script" uid="uid://cp6v3mrbk6a7x" path="res://scripts/wave_spawn_entry.gd" id="13_uwbj1"]
+[ext_resource type="Script" uid="uid://c4spawnpoint1" path="res://scripts/spawn_point.gd" id="14_3akcx"]
+[ext_resource type="PackedScene" uid="uid://ct0he7y1213ee" path="res://prefabs/heal_potion.tscn" id="17_i1j6r"]
+[ext_resource type="PackedScene" uid="uid://ch7t45gc0sq7h" path="res://prefabs/power_up.tscn" id="18_3akcx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dabdc"]
 texture = ExtResource("1_0nboi")
@@ -1474,6 +1481,34 @@ sources/1 = SubResource("TileSetAtlasSource_65srx")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
 size = Vector2(46, 42)
 
+[sub_resource type="Resource" id="Resource_i1j6r"]
+script = ExtResource("13_uwbj1")
+enemy_scene = ExtResource("11_ercsu")
+count = 11
+metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
+
+[sub_resource type="Resource" id="Resource_3akcx"]
+script = ExtResource("12_uwbj1")
+entries = Array[ExtResource("13_uwbj1")]([SubResource("Resource_i1j6r")])
+metadata/_custom_type_script = "uid://cuu8421w3ywf1"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_do11t"]
+size = Vector2(21, 340)
+
+[sub_resource type="Resource" id="Resource_3h1w1"]
+script = ExtResource("13_uwbj1")
+enemy_scene = ExtResource("11_ercsu")
+count = 6
+metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
+
+[sub_resource type="Resource" id="Resource_qavbn"]
+script = ExtResource("12_uwbj1")
+entries = Array[ExtResource("13_uwbj1")]([SubResource("Resource_3h1w1")])
+metadata/_custom_type_script = "uid://cuu8421w3ywf1"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2vyo"]
+size = Vector2(18.5, 16)
+
 [node name="forest" type="Node2D" unique_id=1041199890]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1066651933]
@@ -1518,9 +1553,9 @@ max_player_distance = 150.0
 position = Vector2(-136, 199)
 collision_layer = 0
 script = ExtResource("10_ercsu")
+next_level_path = "res://scenes/woods.tscn"
 portal_id = "forest_to_woods"
 destination_portal_id = "woods_to_forest"
-next_level_path = "res://scenes/woods.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
 shape = SubResource("RectangleShape2D_7msn7")
@@ -1528,29 +1563,147 @@ shape = SubResource("RectangleShape2D_7msn7")
 [node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
 position = Vector2(42, -1)
 
-[node name="wolf" parent="." unique_id=1712616006 instance=ExtResource("11_ercsu")]
-position = Vector2(705, 2)
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=1404094185]
+position = Vector2(-52, 209)
+script = ExtResource("11_pyn53")
+waves = Array[ExtResource("12_uwbj1")]([SubResource("Resource_3akcx")])
 
-[node name="wolf2" parent="." unique_id=1342313083 instance=ExtResource("11_ercsu")]
-position = Vector2(583, 158)
+[node name="ActivateSpawn" type="Area2D" parent="EnemySpawner" unique_id=372345044]
+collision_layer = 0
+script = ExtResource("13_i1j6r")
+spawner_path = NodePath("..")
+metadata/_edit_group_ = true
 
-[node name="wolf3" parent="." unique_id=2127292274 instance=ExtResource("11_ercsu")]
-position = Vector2(645, 234)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawner/ActivateSpawn" unique_id=1215383080]
+shape = SubResource("RectangleShape2D_do11t")
 
-[node name="wolf4" parent="." unique_id=1028041773 instance=ExtResource("11_ercsu")]
-position = Vector2(437, 332)
+[node name="SpawnPoint" type="Marker2D" parent="EnemySpawner" unique_id=1365671346]
+position = Vector2(62, -103)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
 
-[node name="wolf5" parent="." unique_id=436855803 instance=ExtResource("11_ercsu")]
-position = Vector2(47, 353)
+[node name="SpawnPoint2" type="Marker2D" parent="EnemySpawner" unique_id=1201696736]
+position = Vector2(223, -16)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
 
-[node name="wolf6" parent="." unique_id=1747854936 instance=ExtResource("11_ercsu")]
-position = Vector2(9, 53)
+[node name="SpawnPoint3" type="Marker2D" parent="EnemySpawner" unique_id=39498887]
+position = Vector2(68, 122)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
 
-[node name="wolf7" parent="." unique_id=434953166 instance=ExtResource("11_ercsu")]
-position = Vector2(273, 304)
+[node name="SpawnPoint4" type="Marker2D" parent="EnemySpawner" unique_id=456693989]
+position = Vector2(113, 153)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
 
-[node name="wolf8" parent="." unique_id=824098448 instance=ExtResource("11_ercsu")]
-position = Vector2(288, 236)
+[node name="SpawnPoint5" type="Marker2D" parent="EnemySpawner" unique_id=372533236]
+position = Vector2(212, 170)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
 
-[node name="wolf9" parent="." unique_id=1269739141 instance=ExtResource("11_ercsu")]
-position = Vector2(422, 73)
+[node name="SpawnPoint6" type="Marker2D" parent="EnemySpawner" unique_id=1001810446]
+position = Vector2(502, 150)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint7" type="Marker2D" parent="EnemySpawner" unique_id=1346530012]
+position = Vector2(650, 105)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint8" type="Marker2D" parent="EnemySpawner" unique_id=2007405145]
+position = Vector2(775, -27)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint9" type="Marker2D" parent="EnemySpawner" unique_id=1724723537]
+position = Vector2(722, -179)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint10" type="Marker2D" parent="EnemySpawner" unique_id=1917025157]
+position = Vector2(469, -139)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint11" type="Marker2D" parent="EnemySpawner" unique_id=1291902883]
+position = Vector2(130, -166)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="EnemySpawner2" type="Node2D" parent="." unique_id=1535764432]
+visible = false
+position = Vector2(614, 222)
+script = ExtResource("11_pyn53")
+waves = Array[ExtResource("12_uwbj1")]([SubResource("Resource_qavbn")])
+
+[node name="ActivateSpawn" type="Area2D" parent="EnemySpawner2" unique_id=1464698290]
+position = Vector2(26, -65)
+collision_layer = 0
+script = ExtResource("13_i1j6r")
+spawner_path = NodePath("..")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawner2/ActivateSpawn" unique_id=1167526090]
+position = Vector2(-8.75, 29)
+shape = SubResource("RectangleShape2D_c2vyo")
+
+[node name="SpawnPoint" type="Marker2D" parent="EnemySpawner2" unique_id=72111174]
+position = Vector2(52, -37)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint2" type="Marker2D" parent="EnemySpawner2" unique_id=541332106]
+position = Vector2(13, -159)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint3" type="Marker2D" parent="EnemySpawner2" unique_id=132144894]
+position = Vector2(-96, 106)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint4" type="Marker2D" parent="EnemySpawner2" unique_id=379965444]
+position = Vector2(-572, 100)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint5" type="Marker2D" parent="EnemySpawner2" unique_id=59819413]
+position = Vector2(-265, 159)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="SpawnPoint6" type="Marker2D" parent="EnemySpawner2" unique_id=933378534]
+position = Vector2(-525, -179)
+gizmo_extents = 0.0
+script = ExtResource("14_3akcx")
+enemy_scene_override = ExtResource("11_ercsu")
+
+[node name="powerUp" parent="." unique_id=359951056 instance=ExtResource("18_3akcx")]
+position = Vector2(631, 185)
+
+[node name="healPotion" parent="." unique_id=1691048370 instance=ExtResource("17_i1j6r")]
+position = Vector2(384, 408)
+
+[node name="healPotion2" parent="." unique_id=201464934 instance=ExtResource("17_i1j6r")]
+position = Vector2(175, 3)
+
+[node name="healPotion3" parent="." unique_id=610905973 instance=ExtResource("17_i1j6r")]
+position = Vector2(701, 19)
