@@ -18,6 +18,7 @@ var can_be_hit: bool = true
 var heavy_cooldown_timer: float = 0.0
 var attack_timer: float = 0.0
 var _knockback_timer: float = 0.0
+var attack_multiplier: float = 1.0
 
 const KNOCKBACK_SLIDE_DURATION: float = 0.2
 
@@ -119,6 +120,13 @@ func _start_heavy_attack() -> void:
 	if sprite and sprite.sprite_frames.has_animation("attack_heavy"):
 		sprite.play("attack_heavy")
 
+func apply_attack_power_up(multiplier: float = 1.25) -> void:
+	attack_multiplier *= multiplier
+
+
+func get_scaled_damage(base_damage: int) -> int:
+	return maxi(1, roundi(base_damage * attack_multiplier))
+
 
 func _end_attack() -> void:
 	state = State.IDLE if direction == Vector2.ZERO else State.MOVE
@@ -149,7 +157,27 @@ func take_damage(amount: int, attacker: Node = null, knockback_distance: float =
 	if sprite and sprite.sprite_frames.has_animation("hit"):
 		sprite.play("hit")
 	_get_hit_recovery()
+	pass
 
+func heal(amount: int) -> void:
+	if state == State.DEAD:
+		return
+		
+		health = mini(health + amount, max_health)
+		health_changed.emit(health, max_health)
+pass
+
+func heal_to_full() -> void:
+	if state == State.DEAD:
+		return
+	
+	if health >= max_health:
+		return
+	
+	health = max_health
+	health_changed.emit(health, max_health)
+	
+pass
 
 func _get_hit_recovery() -> void:
 	await get_tree().create_timer(0.5).timeout

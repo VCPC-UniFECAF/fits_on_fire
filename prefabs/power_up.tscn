@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ch7t45gc0sq7h"]
+
+[ext_resource type="Script" uid="uid://x7v3hfdl7bfs" path="res://scripts/power_up.gd" id="1_4qedv"]
+[ext_resource type="Texture2D" uid="uid://bubiaotcm1gds" path="res://sprites/scenerios/cave/Dungeon_Tileset.png" id="2_egr8w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tipki"]
+radius = 17.117243
+
+[node name="powerUp" type="Area2D" unique_id=359951056]
+script = ExtResource("1_4qedv")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=323287742]
+position = Vector2(-0.25, 0.09615326)
+scale = Vector2(1.6538461, 1.6538461)
+texture = ExtResource("2_egr8w")
+region_enabled = true
+region_rect = Rect2(113.18571, 144.88747, 13.614227, 15.062546)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1709849103]
+shape = SubResource("CircleShape2D_tipki")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

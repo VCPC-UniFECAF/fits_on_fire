@@ -18,11 +18,11 @@ func _get_heavy_attack_duration() -> float:
 
 
 func _perform_light_attack() -> void:
-	_spawn_hitbox(light_damage, light_hitbox_offset, 0.2, attack_knockback)
+	_spawn_hitbox(get_scaled_damage(light_damage), light_hitbox_offset, 0.2, attack_knockback)
 
 
 func _perform_heavy_attack() -> void:
-	_spawn_hitbox(heavy_damage, heavy_hitbox_offset, 0.35, attack_knockback)
+	_spawn_hitbox(get_scaled_damage(heavy_damage), heavy_hitbox_offset, 0.35, attack_knockback)
 
 
 func _spawn_hitbox(dmg: int, offset: Vector2, life: float, kb: float) -> void:

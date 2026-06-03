@@ -4,6 +4,8 @@ extends Node
 
 var fase_narrativa_max: int = 1
 var dragao_derrotado: bool = false
+var cave_key_collected: bool = false
+var cave_gate_unlocked: bool = false
 
 const FASE_POR_CENA: Dictionary = {
 	"house": 1,
@@ -47,6 +49,14 @@ func registrar_cena(scene_path: String) -> void:
 func registrar_dragao_derrotado() -> void:
 	dragao_derrotado = true
 	fase_narrativa_max = maxi(fase_narrativa_max, 5)
+
+
+func collect_cave_key() -> void:
+	cave_key_collected = true
+
+
+func unlock_cave_gate() -> void:
+	cave_gate_unlocked = true
 
 
 func get_fase_efetiva() -> int:
