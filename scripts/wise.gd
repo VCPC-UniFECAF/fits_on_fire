@@ -3,6 +3,8 @@ extends Area2D
 
 ## Contexto local da cena (tom, dicas). Lore desbloqueado vem de StoryState (autoload).
 @export var fase_atual: int = 1
+## No ninho do dragão: invisível e sem colisão até StoryState.dragao_derrotado.
+@export var bloqueado_ate_dragao_derrotado: bool = false
 
 const WiseLoreData = preload("res://data/wise_lore.gd")
 const StoryStateScript = preload("res://scripts/story_state.gd")
@@ -12,11 +14,13 @@ const GEMINI_URL := "https://generativelanguage.googleapis.com/v1beta/models/gem
 const MAX_OUTPUT_TOKENS := 512
 const PROMPT_INTERACT := "▲ Interagir"
 const PROMPT_BLOCKED := "Derrote os inimigos primeiro"
+const DRAGAO_UNLOCK_DELAY := 2.0
 const MSG_POS_BOSS := (
 	"[color=yellow]Wise:[/color] O ar está leve outra vez. O Dragão Calórico caiu — "
 	+ "pergunte o que quiser sobre o mundo; a história inteira está ao seu alcance.\n\n"
 )
 
+@onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var prompt_label: Label = $PromptLabel
 @onready var dialog_canvas: CanvasLayer = $DialogCanvas
 @onready var chat_log: RichTextLabel = $DialogCanvas/DialogRoot/Panel/ChatLog
@@ -42,6 +46,45 @@ func _ready() -> void:
 	dialog_canvas.visible = false
 	prompt_label.visible = false
 	fase_atual = WiseLoreData.clamp_fase(fase_atual)
+	_apply_unlock_state()
+	if bloqueado_ate_dragao_derrotado and not _is_unlocked():
+		_connect_boss_died()
+
+
+func _connect_boss_died() -> void:
+	for boss in get_tree().get_nodes_in_group("boss"):
+		if boss.has_signal("died") and not boss.died.is_connected(_on_dragao_derrotado):
+			boss.died.connect(_on_dragao_derrotado)
+
+
+func _on_dragao_derrotado() -> void:
+	await get_tree().create_timer(DRAGAO_UNLOCK_DELAY).timeout
+	if not is_instance_valid(self):
+		return
+	_apply_unlock_state()
+
+
+func _is_unlocked() -> bool:
+	if not bloqueado_ate_dragao_derrotado:
+		return true
+	return _story.dragao_derrotado
+
+
+func _apply_unlock_state() -> void:
+	var unlocked := _is_unlocked()
+	visible = unlocked
+	monitoring = unlocked
+	monitorable = unlocked
+	set_process(unlocked)
+	set_physics_process(unlocked)
+	set_process_unhandled_input(unlocked)
+	if _sprite:
+		_sprite.visible = unlocked
+	if not unlocked:
+		_player_in_range = null
+		prompt_label.visible = false
+		if _dialog_open:
+			_close_dialog()
 
 
 func _load_gemini_api_key() -> String:
@@ -78,6 +121,9 @@ func _has_living_enemies() -> bool:
 
 
 func _update_prompt_visibility() -> void:
+	if not _is_unlocked():
+		prompt_label.visible = false
+		return
 	if _dialog_open:
 		return
 	if _player_in_range == null:
@@ -111,6 +157,8 @@ func _unfreeze_all_players() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
+	if not _is_unlocked():
+		return
 	if not body.is_in_group("player"):
 		return
 	_player_in_range = body
@@ -125,6 +173,8 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not _is_unlocked():
+		return
 	if _dialog_open:
 		if event.is_action_pressed("ui_cancel"):
 			_close_dialog()
@@ -143,6 +193,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _open_dialog(_player: Node2D) -> void:
+	if not _is_unlocked():
+		return
 	if _has_living_enemies():
 		return
 	_dialog_open = true

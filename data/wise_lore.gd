@@ -39,7 +39,8 @@ const LORE_BLOCOS: Dictionary = {
 - Magia e força física vinham da mesma fonte: esforço contínuo e disciplina.
 - A Chama Endorfínica (energia vital gerada pelo movimento) mantinha o mundo em equilíbrio.
 - Veio o Advento do Conforto: automação, descanso eterno, as pessoas pararam de se mover.
-- Isso gerou a Grande Letargia: atmosfera densa, ar pesado, névoa invisível chamada Inércia que suprime vontade e força vital.""",
+- Isso gerou a Grande Letargia: atmosfera densa, ar pesado, névoa invisível chamada Inércia que suprime vontade e força vital.
+- explique ao jogador que tem poções de cura e aumento de poder pelas fases""",
 
 	2: """FASE 2 — O Bosque
 - A Inércia cria um ciclo vicioso: quanto menos se move, mais difícil é qualquer movimento.
@@ -49,19 +50,22 @@ const LORE_BLOCOS: Dictionary = {
 	3: """FASE 3 — A Floresta Densa
 - Os Lobisomens (Estresse Acumulado): humanos com tensão e estresse absurdos nunca liberados pelo esforço físico.
 - O conforto não eliminou o estresse, apenas removeu a válvula de escape corporal.
-- A energia reprimida os transformou em bestas hiperativas, furiosas e sem foco.""",
+- A energia reprimida os transformou em bestas hiperativas, furiosas e sem foco.
+- uma poção de poder disponível no mapa""",
 
 	4: """FASE 4 — As Ruínas
 - Os Orcs (A Massa Sem Disciplina): consumiram fartura e recursos da era do conforto sem tensão mecânica nem restrição.
 - Tornaram-se massa bruta lenta e pesada, protetores territoriais dos estoques da antiga civilização.
-- Levam esses recursos para as profundezas, alimentando algo maior no núcleo da terra.""",
+- Levam esses recursos para as profundezas, alimentando algo maior no núcleo da terra.
+- uma poção de poder disponível no mapa""",
 
 	5: """FASE 5 — A Caverna (pré-boss)
 - A Inércia condensou-se no núcleo do mundo e deu origem ao Dragão Calórico.
 - Parasita planetário que dorme sobre luxos e conveniências antigas, sugando a energia vital restante.
 - Seu fogo é combustão de calorias estagnadas e excessos — não é a luz saudável do movimento.
 - Enquanto queimar a terra com fúria, o metabolismo do mundo permanece travado.
-- O Guerreiro (tensão mecânica, impactos que quebram a estagnação do ar) e o Mago (combustão de calorias astrais, magia como energia interna) são a anomalia capaz de reacender o núcleo e queimar as reservas do Dragão.""",
+- O Guerreiro (tensão mecânica, impactos que quebram a estagnação do ar) e o Mago (combustão de calorias astrais, magia como energia interna) são a anomalia capaz de reacender o núcleo e queimar as reservas do Dragão.
+- uma poção de poder disponível no mapa""",
 
 	6: """FASE 6 — Pós-vitória sobre o Dragão Calórico
 - O Dragão foi derrotado; a Ruptura Metabólica foi curada.
