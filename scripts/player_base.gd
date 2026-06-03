@@ -32,6 +32,7 @@ func _ready() -> void:
 	if sprite:
 		sprite.animation_finished.connect(_on_animation_finished)
 	call_deferred("_register_player_collision_exceptions")
+	_sync_attack_multiplier_from_story()
 
 
 func _register_player_collision_exceptions() -> void:
@@ -120,12 +121,27 @@ func _start_heavy_attack() -> void:
 	if sprite and sprite.sprite_frames.has_animation("attack_heavy"):
 		sprite.play("attack_heavy")
 
+func _sync_attack_multiplier_from_story() -> void:
+	var story := get_node_or_null("/root/StoryState") as StoryProgress
+	if story:
+		attack_multiplier = story.get_attack_power_multiplier()
+
+
 func apply_attack_power_up(multiplier: float = 1.25) -> void:
-	attack_multiplier *= multiplier
+	var story := get_node_or_null("/root/StoryState") as StoryProgress
+	if story == null:
+		attack_multiplier *= multiplier
+		return
+	var path := ""
+	if get_tree().current_scene:
+		path = get_tree().current_scene.scene_file_path
+	if story.collect_power_up(path, multiplier):
+		attack_multiplier = story.get_attack_power_multiplier()
 
 
 func get_scaled_damage(base_damage: int) -> int:
 	return maxi(1, roundi(base_damage * attack_multiplier))
+
 
 
 func _end_attack() -> void:

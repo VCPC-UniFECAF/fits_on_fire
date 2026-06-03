@@ -1489,7 +1489,7 @@ fase_atual = 2
 position = Vector2(-19, -477)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_ehbw6")]
-position = Vector2(17, -469)
+position = Vector2(16, -470)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1761298855]
 position = Vector2(157, 85)
@@ -1514,8 +1514,11 @@ destination_portal_id = "cave_to_woods"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
-position = Vector2(53, 14)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(29, -11)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal" unique_id=1822846502]
+position = Vector2(29, 15)
 
 [node name="portal2" type="Area2D" parent="." unique_id=2089628270]
 position = Vector2(-7, -525)
@@ -1528,8 +1531,11 @@ destination_portal_id = "ruins_to_woods"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal2" unique_id=104861751]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal2" unique_id=635308348]
-position = Vector2(-2, 55)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal2" unique_id=635308348]
+position = Vector2(-12, 42)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal2" unique_id=635308349]
+position = Vector2(13, 42)
 
 [node name="portal3" type="Area2D" parent="." unique_id=1366909263]
 position = Vector2(376, -443)
@@ -1542,8 +1548,11 @@ destination_portal_id = "forest_to_woods"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal3" unique_id=1581604030]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal3" unique_id=336636788]
-position = Vector2(-57, 1)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal3" unique_id=336636788]
+position = Vector2(-29, 20)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal3" unique_id=336636789]
+position = Vector2(-29, -12)
 
 [node name="portal4" type="Area2D" parent="." unique_id=100940601]
 position = Vector2(292, 117)
@@ -1557,5 +1566,8 @@ destination_portal_id = "house_to_woods"
 position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal4" unique_id=453877470]
-position = Vector2(2, 57)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal4" unique_id=453877470]
+position = Vector2(-10, 35)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal4" unique_id=453877471]
+position = Vector2(16, 35)
