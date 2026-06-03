@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="3_sek5r"]
 [ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="4_i1yi8"]
 [ext_resource type="Texture2D" uid="uid://cyu26b0kda88h" path="res://sprites/scenerios/ruins/Texture/TX Plant.png" id="4_j3csf"]
-[ext_resource type="PackedScene" uid="uid://ctee5g4e8kjf2" path="res://prefabs/portal.tscn" id="10_ercsu"]
+[ext_resource type="Script" uid="uid://o3i3f5gtkxgh" path="res://scripts/portal.gd" id="10_ercsu"]
 [ext_resource type="PackedScene" uid="uid://com4mxrdnmdeb" path="res://prefabs/wolf.tscn" id="11_ercsu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dabdc"]
@@ -1471,6 +1471,9 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_c2vyo")
 sources/1 = SubResource("TileSetAtlasSource_65srx")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
+size = Vector2(46, 42)
+
 [node name="forest" type="Node2D" unique_id=1041199890]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1066651933]
@@ -1511,9 +1514,19 @@ script = ExtResource("4_i1yi8")
 smooth_speed = 10.0
 max_player_distance = 150.0
 
-[node name="portal" parent="." unique_id=1054975535 instance=ExtResource("10_ercsu")]
-position = Vector2(-141, 199)
+[node name="portal" type="Area2D" parent="." unique_id=1054975535]
+position = Vector2(-136, 199)
+collision_layer = 0
+script = ExtResource("10_ercsu")
+portal_id = "forest_to_woods"
+destination_portal_id = "woods_to_forest"
 next_level_path = "res://scenes/woods.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
+shape = SubResource("RectangleShape2D_7msn7")
+
+[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(42, -1)
 
 [node name="wolf" parent="." unique_id=1712616006 instance=ExtResource("11_ercsu")]
 position = Vector2(705, 2)

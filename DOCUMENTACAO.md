@@ -238,6 +238,7 @@ Visão geral de cada script em `scripts/`:
 | `spawn_point.gd` | `SpawnPoint` / `Marker2D` | Ponto de spawn; instancia o inimigo |
 | `activate_spawn.gd` | `ActivateSpawn` / `Area2D` | Gatilho que inicia o spawner ao jogador entrar |
 | `portal.gd` | — / `Area2D` | Transição para a próxima fase quando inimigos derrotados |
+| `portal_travel.gd` | — / `Node` (autoload) | Reposiciona jogadores no `PlayerSpawn` do portal de chegada |
 | `scene_cycle.gd` | — / `Node` (autoload) | Troca de cena pela tecla `Espaço` |
 | `camera_follow.gd` | — / `Camera2D` | Câmera que segue os 2 jogadores com zoom dinâmico |
 | `health_bar.gd` | `HealthBar` / `Control` | Barra de vida do HUD (jogadores) |
@@ -268,6 +269,14 @@ SCENE_ORDER = [
      **E** não há inimigos vivos na cena.
    - O destino é configurado em `next_level_path` (caminho `.tscn` por export).
    - Aciona uma `SceneTransition` (autoload opcional `root/SceneTransition`) se existir.
+   - **Spawn com memória (`PortalTravel`):** cada instância de portal define
+     `portal_id` (identidade única) e `destination_portal_id` (portal na cena de
+     destino onde o jogador aparece). Ao sair, grava-se o deslocamento de cada
+     `player_id` em relação ao filho `PlayerSpawn` (Marker2D); na cena nova, o
+     autoload posiciona os jogadores em `PlayerSpawn.global_position + offset` e
+     aplica `start_arrival_cooldown` no portal de chegada. Pares bidirecionais
+     (ex.: `house_to_woods` ↔ `woods_to_house`). Sem viagem registrada (`SceneCycle`),
+     mantém-se as posições do editor.
 
 2. **`SceneCycle` (autoload) — avanço por debug/demo:**
    - Tecla `Espaço` pula para a próxima cena na lista `SCENE_ORDER` (cíclico).

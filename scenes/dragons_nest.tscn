@@ -280,4 +280,6 @@ position = Vector2(92, 169)
 
 [node name="portal" parent="." unique_id=1054975535 instance=ExtResource("7_g0oq3")]
 position = Vector2(487, 26)
+portal_id = "nest_to_cave"
+destination_portal_id = "cave_to_nest"
 next_level_path = "res://scenes/cave.tscn"
