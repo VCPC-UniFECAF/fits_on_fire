@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://4c4rkgeraf4g" path="res://sprites/scenerios/woods/woodstuff.png" id="7_ljiug"]
 [ext_resource type="Texture2D" uid="uid://dwwe6brnhhs45" path="res://sprites/scenerios/woods/houses.png" id="8_24k67"]
 [ext_resource type="Texture2D" uid="uid://rxi3e6nglqqu" path="res://sprites/scenerios/woods/waterfall.png" id="9_87hon"]
-[ext_resource type="PackedScene" uid="uid://ctee5g4e8kjf2" path="res://prefabs/portal.tscn" id="10_qpjdc"]
+[ext_resource type="Script" uid="uid://o3i3f5gtkxgh" path="res://scripts/portal.gd" id="11_24k67"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8u53l"]
 texture = ExtResource("6_8u53l")
@@ -1452,6 +1452,9 @@ margins = Vector2i(0, 15)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_mqdvn")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
+size = Vector2(24, 20)
+
 [node name="woods" type="Node2D" unique_id=2144677870]
 
 [node name="TileMapLayer_floor" type="TileMapLayer" parent="." unique_id=567181031]
@@ -1482,10 +1485,10 @@ position = Vector2(247, 165)
 fase_atual = 2
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("2_dtbgo")]
-position = Vector2(309, 178)
+position = Vector2(-26, -155)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_ehbw6")]
-position = Vector2(284, 174)
+position = Vector2(78, -265)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1761298855]
 position = Vector2(156, 85)
@@ -1499,18 +1502,58 @@ smooth_speed = 10.0
 min_zoom = 1.5
 max_player_distance = 150.0
 
-[node name="portal" parent="." unique_id=1054975535 instance=ExtResource("10_qpjdc")]
-position = Vector2(-252, -234)
+[node name="portal" type="Area2D" parent="." unique_id=1054975535]
+position = Vector2(-252, -233)
+collision_layer = 0
+script = ExtResource("11_24k67")
+portal_id = "woods_to_cave"
+destination_portal_id = "cave_to_woods"
 next_level_path = "res://scenes/cave.tscn"
 
-[node name="portal2" parent="." unique_id=2089628270 instance=ExtResource("10_qpjdc")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
+shape = SubResource("RectangleShape2D_7msn7")
+
+[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(53, 14)
+
+[node name="portal2" type="Area2D" parent="." unique_id=2089628270]
 position = Vector2(-7, -525)
+collision_layer = 0
+script = ExtResource("11_24k67")
+portal_id = "woods_to_ruins"
+destination_portal_id = "ruins_to_woods"
 next_level_path = "res://scenes/ruins.tscn"
 
-[node name="portal3" parent="." unique_id=1366909263 instance=ExtResource("10_qpjdc")]
-position = Vector2(378, -444)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal2" unique_id=104861751]
+shape = SubResource("RectangleShape2D_7msn7")
+
+[node name="PlayerSpawn" type="Marker2D" parent="portal2" unique_id=635308348]
+position = Vector2(-1, 70)
+
+[node name="portal3" type="Area2D" parent="." unique_id=1366909263]
+position = Vector2(376, -443)
+collision_layer = 0
+script = ExtResource("11_24k67")
+portal_id = "woods_to_forest"
+destination_portal_id = "forest_to_woods"
 next_level_path = "res://scenes/forest.tscn"
 
-[node name="portal4" parent="." unique_id=100940601 instance=ExtResource("10_qpjdc")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal3" unique_id=1581604030]
+shape = SubResource("RectangleShape2D_7msn7")
+
+[node name="PlayerSpawn" type="Marker2D" parent="portal3" unique_id=336636788]
+position = Vector2(-57, 1)
+
+[node name="portal4" type="Area2D" parent="." unique_id=100940601]
 position = Vector2(292, 117)
+collision_layer = 0
+script = ExtResource("11_24k67")
+portal_id = "woods_to_house"
+destination_portal_id = "house_to_woods"
 next_level_path = "res://scenes/house.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal4" unique_id=464957164]
+shape = SubResource("RectangleShape2D_7msn7")
+
+[node name="PlayerSpawn" type="Marker2D" parent="portal4" unique_id=453877470]
+position = Vector2(2, 57)

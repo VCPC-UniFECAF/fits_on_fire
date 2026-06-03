@@ -1,9 +1,12 @@
 extends Area2D
 
 @export_file("*.tscn") var next_level_path: String
+@export var portal_id: String = ""
+@export var destination_portal_id: String = ""
 
 var _transitioning: bool = false
 var _warned_missing_path: bool = false
+var _warned_missing_destination: bool = false
 var _arrival_cooldown: float = 0.0
 
 
@@ -23,6 +26,10 @@ func _physics_process(delta: float) -> void:
 
 func start_arrival_cooldown(duration: float = 0.5) -> void:
 	_arrival_cooldown = duration
+
+
+func get_player_spawn() -> Marker2D:
+	return get_node_or_null("PlayerSpawn") as Marker2D
 
 
 func _is_valid_player(body: Node) -> bool:
@@ -79,6 +86,31 @@ func _has_living_enemies() -> bool:
 	return false
 
 
+func _collect_player_offsets(players: Array[Node2D]) -> Dictionary:
+	var offsets: Dictionary = {}
+	var spawn := get_player_spawn()
+	var origin := global_position
+	if spawn:
+		origin = spawn.global_position
+	for player in players:
+		var pid: int = 0
+		if "player_id" in player:
+			pid = player.player_id
+		offsets[pid] = player.global_position - origin
+	return offsets
+
+
+func _record_travel(players: Array[Node2D]) -> void:
+	if destination_portal_id.is_empty():
+		if not _warned_missing_destination:
+			push_warning(
+				"Portal '%s': destination_portal_id não configurado." % portal_id
+			)
+			_warned_missing_destination = true
+		return
+	PortalTravel.set_travel(destination_portal_id, _collect_player_offsets(players))
+
+
 func _try_transition() -> void:
 	if _transitioning:
 		return
@@ -92,6 +124,8 @@ func _try_transition() -> void:
 	if _has_living_enemies():
 		return
 	_transitioning = true
+	var living := _get_living_players()
+	_record_travel(living)
 	var current_scene := get_tree().current_scene
 	if current_scene and not current_scene.scene_file_path.is_empty():
 		var scene_transition := get_tree().root.get_node_or_null("SceneTransition")

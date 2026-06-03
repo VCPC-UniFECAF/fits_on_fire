@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 SceneCycle="*res://scripts/scene_cycle.gd"
 StoryState="*res://scripts/story_state.gd"
+PortalTravel="*res://scripts/portal_travel.gd"
 
 [display]
 

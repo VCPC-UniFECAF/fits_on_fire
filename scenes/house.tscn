@@ -1332,4 +1332,9 @@ position = Vector2(167, 107)
 
 [node name="portal" parent="." unique_id=1054975535 instance=ExtResource("9_bwc8c")]
 position = Vector2(256, 43)
+portal_id = "house_to_woods"
+destination_portal_id = "woods_to_house"
 next_level_path = "res://scenes/woods.tscn"
+
+[node name="PlayerSpawn" parent="portal" index="1"]
+position = Vector2(0, 48)
