@@ -12,5 +12,8 @@ script = ExtResource("1_gbxor")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=632597338]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1822846500]
-position = Vector2(29, 0)
+[node name="PlayerSpawn0" type="Marker2D" parent="." unique_id=1822846500]
+position = Vector2(-15, 30)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="." unique_id=1822846501]
+position = Vector2(18, 29)

@@ -2,12 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bx6ybe6uyav2g" path="res://scripts/wise.gd" id="1_wise"]
 [ext_resource type="Texture2D" uid="uid://0wvmkuh3j8ph" path="res://sprites/Characters(100x100)/wizard/Group 5.png" id="2_tex"]
-[ext_resource type="Script" uid="uid://bbyrsk2j421wa" path="res://scripts/enemy_spawner.gd" id="3_0y0xw"]
-[ext_resource type="Script" uid="uid://cuu8421w3ywf1" path="res://scripts/wave_config.gd" id="4_t84gx"]
-[ext_resource type="Script" uid="uid://cp6v3mrbk6a7x" path="res://scripts/wave_spawn_entry.gd" id="5_yfto5"]
-[ext_resource type="PackedScene" uid="uid://dhinqg56j8sjl" path="res://prefabs/orc.tscn" id="6_w22j1"]
-[ext_resource type="Script" uid="uid://ug8gx086wya" path="res://scripts/activate_spawn.gd" id="7_cgmi7"]
-[ext_resource type="Script" uid="uid://c4spawnpoint1" path="res://scripts/spawn_point.gd" id="8_0myqw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yh5q4"]
 atlas = ExtResource("2_tex")
@@ -61,31 +55,6 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t84gx"]
 radius = 18.0
-
-[sub_resource type="Resource" id="Resource_nllk3"]
-script = ExtResource("5_yfto5")
-enemy_scene = ExtResource("6_w22j1")
-count = 11
-metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
-
-[sub_resource type="Resource" id="Resource_jam8s"]
-script = ExtResource("4_t84gx")
-entries = Array[ExtResource("5_yfto5")]([SubResource("Resource_nllk3")])
-metadata/_custom_type_script = "uid://cuu8421w3ywf1"
-
-[sub_resource type="Resource" id="Resource_hyi7h"]
-script = ExtResource("5_yfto5")
-enemy_scene = ExtResource("6_w22j1")
-count = 8
-metadata/_custom_type_script = "uid://cp6v3mrbk6a7x"
-
-[sub_resource type="Resource" id="Resource_i5q2e"]
-script = ExtResource("4_t84gx")
-entries = Array[ExtResource("5_yfto5")]([SubResource("Resource_hyi7h")])
-metadata/_custom_type_script = "uid://cuu8421w3ywf1"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qma0l"]
-size = Vector2(189, 18.796875)
 
 [node name="wise" type="Area2D" unique_id=2007292004]
 script = ExtResource("1_wise")
@@ -166,84 +135,3 @@ placeholder_text = "Digite e Enter..."
 clear_button_enabled = true
 
 [node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1101933277]
-
-[node name="EnemySpawner" type="Node2D" parent="." unique_id=1777810805]
-position = Vector2(554, -196)
-script = ExtResource("3_0y0xw")
-waves = Array[ExtResource("4_t84gx")]([SubResource("Resource_jam8s"), SubResource("Resource_i5q2e")])
-
-[node name="ActivateSpawn" type="Area2D" parent="EnemySpawner" unique_id=1219227496]
-collision_layer = 0
-script = ExtResource("7_cgmi7")
-spawner_path = NodePath("..")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawner/ActivateSpawn" unique_id=922140167]
-position = Vector2(-0.5, -1.6015625)
-shape = SubResource("RectangleShape2D_qma0l")
-
-[node name="SpawnPoint" type="Marker2D" parent="EnemySpawner" unique_id=407799698]
-position = Vector2(174, 139)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint2" type="Marker2D" parent="EnemySpawner" unique_id=1902531281]
-position = Vector2(-174, 69)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint3" type="Marker2D" parent="EnemySpawner" unique_id=1643546375]
-position = Vector2(5, 116)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint4" type="Marker2D" parent="EnemySpawner" unique_id=925617829]
-position = Vector2(344, 424)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint5" type="Marker2D" parent="EnemySpawner" unique_id=1316459753]
-position = Vector2(-142, 455)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint6" type="Marker2D" parent="EnemySpawner" unique_id=912730945]
-position = Vector2(39, 588)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint7" type="Marker2D" parent="EnemySpawner" unique_id=1937410731]
-position = Vector2(264, 813)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint8" type="Marker2D" parent="EnemySpawner" unique_id=1879448774]
-position = Vector2(86, 895)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint9" type="Marker2D" parent="EnemySpawner" unique_id=44038435]
-position = Vector2(-186, 836)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint10" type="Marker2D" parent="EnemySpawner" unique_id=194776215]
-position = Vector2(-410, 786)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")
-
-[node name="SpawnPoint11" type="Marker2D" parent="EnemySpawner" unique_id=1233475035]
-position = Vector2(-481, 431)
-gizmo_extents = 0.0
-script = ExtResource("8_0myqw")
-enemy_scene_override = ExtResource("6_w22j1")

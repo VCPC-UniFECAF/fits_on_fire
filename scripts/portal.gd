@@ -28,8 +28,12 @@ func start_arrival_cooldown(duration: float = 0.5) -> void:
 	_arrival_cooldown = duration
 
 
-func get_player_spawn() -> Marker2D:
-	return get_node_or_null("PlayerSpawn") as Marker2D
+func get_spawn_position_for_player(player_id: int) -> Vector2:
+	var marker := get_node_or_null("PlayerSpawn%d" % player_id) as Marker2D
+	if marker:
+		return marker.global_position
+	push_warning("Portal '%s': falta PlayerSpawn%d." % [portal_id, player_id])
+	return global_position
 
 
 func _is_valid_player(body: Node) -> bool:
@@ -86,21 +90,7 @@ func _has_living_enemies() -> bool:
 	return false
 
 
-func _collect_player_offsets(players: Array[Node2D]) -> Dictionary:
-	var offsets: Dictionary = {}
-	var spawn := get_player_spawn()
-	var origin := global_position
-	if spawn:
-		origin = spawn.global_position
-	for player in players:
-		var pid: int = 0
-		if "player_id" in player:
-			pid = player.player_id
-		offsets[pid] = player.global_position - origin
-	return offsets
-
-
-func _record_travel(players: Array[Node2D]) -> void:
+func _record_travel() -> void:
 	if destination_portal_id.is_empty():
 		if not _warned_missing_destination:
 			push_warning(
@@ -108,7 +98,7 @@ func _record_travel(players: Array[Node2D]) -> void:
 			)
 			_warned_missing_destination = true
 		return
-	PortalTravel.set_travel(destination_portal_id, _collect_player_offsets(players))
+	PortalTravel.set_travel(destination_portal_id)
 
 
 func _try_transition() -> void:
@@ -124,8 +114,7 @@ func _try_transition() -> void:
 	if _has_living_enemies():
 		return
 	_transitioning = true
-	var living := _get_living_players()
-	_record_travel(living)
+	_record_travel()
 	var current_scene := get_tree().current_scene
 	if current_scene and not current_scene.scene_file_path.is_empty():
 		var scene_transition := get_tree().root.get_node_or_null("SceneTransition")

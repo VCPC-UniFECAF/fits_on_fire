@@ -8512,7 +8512,7 @@ sources/0 = SubResource("TileSetAtlasSource_k2k6q")
 sources/1 = SubResource("TileSetAtlasSource_0oy4v")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
-size = Vector2(46, 87)
+size = Vector2(46, 52)
 
 [sub_resource type="Resource" id="Resource_nllk3"]
 script = ExtResource("14_x8oxx")
@@ -8587,11 +8587,14 @@ portal_id = "ruins_to_woods"
 destination_portal_id = "woods_to_ruins"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
-position = Vector2(0, -0.5)
+position = Vector2(0, -18)
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
-position = Vector2(-1, 160)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(-23, 46)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal" unique_id=1822846501]
+position = Vector2(29, 47)
 
 [node name="healPotion" parent="." unique_id=1691048370 instance=ExtResource("18_pgqpv")]
 position = Vector2(832, 589)

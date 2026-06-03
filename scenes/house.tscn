@@ -1322,19 +1322,16 @@ max_zoom = 5.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("4_war")]
-position = Vector2(121, 99)
+position = Vector2(45, 88)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("5_wiz")]
-position = Vector2(185, 75)
+position = Vector2(96, 89)
 
 [node name="wise" parent="." unique_id=1676806881 instance=ExtResource("9_wise")]
-position = Vector2(167, 107)
+position = Vector2(158, 119)
 
 [node name="portal" parent="." unique_id=1054975535 instance=ExtResource("9_bwc8c")]
 position = Vector2(256, 43)
+next_level_path = "res://scenes/woods.tscn"
 portal_id = "house_to_woods"
 destination_portal_id = "woods_to_house"
-next_level_path = "res://scenes/woods.tscn"
-
-[node name="PlayerSpawn" parent="portal" index="1"]
-position = Vector2(0, 48)

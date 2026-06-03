@@ -1,12 +1,6 @@
 extends Node
 
-const DEFAULT_OFFSETS: Dictionary = {
-	0: Vector2(-16, 0),
-	1: Vector2(16, 0),
-}
-
 var _arrival_portal_id: String = ""
-var _player_offsets: Dictionary = {}
 
 
 func _ready() -> void:
@@ -15,9 +9,8 @@ func _ready() -> void:
 		tree.scene_changed.connect(_on_scene_changed)
 
 
-func set_travel(arrival_portal_id: String, player_offsets: Dictionary) -> void:
+func set_travel(arrival_portal_id: String) -> void:
 	_arrival_portal_id = arrival_portal_id
-	_player_offsets = player_offsets.duplicate()
 
 
 func _on_scene_changed() -> void:
@@ -43,15 +36,13 @@ func apply_arrival_spawn() -> void:
 		_clear_travel()
 		return
 
-	var spawn: Marker2D = portal.get_player_spawn()
-	if spawn == null:
+	if not portal.has_method("get_spawn_position_for_player"):
 		push_warning(
-			"PortalTravel: portal '%s' sem PlayerSpawn." % _arrival_portal_id
+			"PortalTravel: portal '%s' sem get_spawn_position_for_player." % _arrival_portal_id
 		)
 		_clear_travel()
 		return
 
-	var spawn_pos := spawn.global_position
 	for node in get_tree().get_nodes_in_group("player"):
 		if not is_instance_valid(node) or not node is Node2D:
 			continue
@@ -60,8 +51,7 @@ func apply_arrival_spawn() -> void:
 		var pid: int = 0
 		if "player_id" in node:
 			pid = node.player_id
-		var offset: Vector2 = _player_offsets.get(pid, DEFAULT_OFFSETS.get(pid, Vector2.ZERO))
-		node.global_position = spawn_pos + offset
+		node.global_position = portal.get_spawn_position_for_player(pid)
 
 	if portal.has_method("start_arrival_cooldown"):
 		portal.start_arrival_cooldown()
@@ -80,4 +70,3 @@ func _find_portal_by_id(id: String) -> Node:
 
 func _clear_travel() -> void:
 	_arrival_portal_id = ""
-	_player_offsets.clear()

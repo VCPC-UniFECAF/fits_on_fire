@@ -6,6 +6,9 @@ var fase_narrativa_max: int = 1
 var dragao_derrotado: bool = false
 var cave_key_collected: bool = false
 var cave_gate_unlocked: bool = false
+var attack_power_multiplier: float = 1.0
+
+var _power_up_scenes_collected: Dictionary = {}
 
 const FASE_POR_CENA: Dictionary = {
 	"house": 1,
@@ -63,3 +66,25 @@ func get_fase_efetiva() -> int:
 	if dragao_derrotado:
 		return 6
 	return fase_narrativa_max
+
+
+func get_attack_power_multiplier() -> float:
+	return attack_power_multiplier
+
+
+func is_power_up_collected(scene_path: String) -> bool:
+	if scene_path.is_empty():
+		return false
+	var nome := scene_path.get_file().get_basename()
+	return _power_up_scenes_collected.get(nome, false)
+
+
+func collect_power_up(scene_path: String, factor: float = 1.25) -> bool:
+	if scene_path.is_empty():
+		return false
+	var nome := scene_path.get_file().get_basename()
+	if _power_up_scenes_collected.get(nome, false):
+		return false
+	_power_up_scenes_collected[nome] = true
+	attack_power_multiplier *= factor
+	return true

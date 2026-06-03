@@ -486,10 +486,10 @@ max_zoom = 3.0
 max_player_distance = 150.0
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("2_ywssb")]
-position = Vector2(159, 4)
+position = Vector2(290, 17)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_rtd55")]
-position = Vector2(298, 8)
+position = Vector2(213, 17)
 
 [node name="wise" parent="." unique_id=1661814888 instance=ExtResource("4_rtd55")]
 position = Vector2(281, 58)
@@ -506,8 +506,11 @@ destination_portal_id = "woods_to_cave"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
-position = Vector2(-1, 37)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(-16, 37)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal" unique_id=1822846501]
+position = Vector2(15, 37)
 
 [node name="portal2" type="Area2D" parent="." unique_id=2068423474]
 position = Vector2(248, 377)
@@ -521,8 +524,11 @@ destination_portal_id = "nest_to_cave"
 position = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_4geow")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal2" unique_id=1557699314]
-position = Vector2(3, -11)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal2" unique_id=1557699314]
+position = Vector2(-2, -19)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal2" unique_id=1557699315]
+position = Vector2(16, -19)
 
 [node name="key" parent="." unique_id=1337226594 instance=ExtResource("8_cameo")]
 position = Vector2(622, 164)

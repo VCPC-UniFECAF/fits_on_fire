@@ -1560,8 +1560,11 @@ destination_portal_id = "woods_to_forest"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="portal" unique_id=632597338]
 shape = SubResource("RectangleShape2D_7msn7")
 
-[node name="PlayerSpawn" type="Marker2D" parent="portal" unique_id=1822846500]
-position = Vector2(42, -1)
+[node name="PlayerSpawn0" type="Marker2D" parent="portal" unique_id=1822846500]
+position = Vector2(40, -17)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal" unique_id=1822846501]
+position = Vector2(42, 16)
 
 [node name="EnemySpawner" type="Node2D" parent="." unique_id=1404094185]
 position = Vector2(-52, 209)
