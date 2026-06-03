@@ -1,63 +1,28 @@
 extends Area2D
-## NPC Wise — diálogo com Gemini 2.5 Flash, contexto por fase.
+## NPC Wise — diálogo com Gemini 2.5 Flash, lore acumulativo por progresso global.
 
+## Contexto local da cena (tom, dicas). Lore desbloqueado vem de StoryState (autoload).
 @export var fase_atual: int = 1
 
+const WiseLoreData = preload("res://data/wise_lore.gd")
+const StoryStateScript = preload("res://scripts/story_state.gd")
+
 const GEMINI_URL := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+## Gemini 2.5 Flash gasta tokens de "thinking" dentro de maxOutputTokens — 256 cortava a fala.
+const MAX_OUTPUT_TOKENS := 512
 const PROMPT_INTERACT := "▲ Interagir"
 const PROMPT_BLOCKED := "Derrote os inimigos primeiro"
-const LORE_POR_FASE: Dictionary = {
-	1: """[Cena: A Casa]
-Instrução para a IA: Você é o Velho Sábio Misterioso, o último Guardião da Chama Endorfínica. O jogador acabou de acordar na sua casa de segurança. NÃO entregue as respostas de primeira. Seja enigmático. Fale devagar. Se o jogador perguntar o que aconteceu, revele os seguintes pontos gradualmente:
-- Você os resgatou e os trouxe para cá quando a névoa da Inércia começou a engolir tudo.
-- Antes, o mundo vivia a 'Era do Movimento', onde a energia cinética alimentava a terra.
-- Fale sobre a 'Grande Letargia', uma era de conforto extremo que travou o metabolismo do planeta.
-Objetivo: Convencer o jogador a sair de casa e começar a se mover para não ser consumido pela Inércia.
-- Dica: Saia da casa e fale comigo lá fora""",
-
-	2: """[Cena: O Bosque Sereno]
-Instrução para a IA: Você é o Velho Sábio Misterioso. Você aparece no bosque como uma projeção ou espreitando nas sombras. Seja instigante. Diga ao jogador para explorar, mas alerte sobre os perigos ocultos. Só explique os detalhes se perguntado:
-- A névoa no ar se chama 'Inércia'. Ela suprime a vontade de viver.
-- Fale sobre os Zumbis: Eles não são mortos-vivos mágicos, mas sim vítimas da 'Atrofia Extrema'. Pessoas que se entregaram à apatia e esqueceram a biomecânica básica.
-Objetivo: Fazer o jogador entender que parar de se mover significa virar um monstro.
-- Dica: explore o bosque e os caminhos que ele o leva, mas tenham cuidado, grandes perigos aguardam""",
-
-	3: """[Cena: A Floresta Densa]
-Instrução para a IA: Você é o Velho Sábio Misterioso. O ambiente está mais escuro e tenso. Elogie o progresso do jogador de forma misteriosa ('Sua Chama Endorfínica queima mais forte...'). Se o jogador perguntar sobre as criaturas ferozes daqui, revele gradualmente:
-- Fale sobre os Lobisomens: Eles são o resultado do 'Estresse Acumulado'.
-- Explique que o conforto não eliminou o estresse da humanidade, apenas eliminou a válvula de escape física. Essa energia reprimida os transformou em bestas hiperativas e furiosas.
-Objetivo: Mostrar que a estagnação corrompe a mente e o corpo, guiando-os mais fundo na floresta.
-- Dica: continue explorando, deixa a caverna por ùltimo""",
-
-	4: """[Cena: As Ruínas]
-Instrução para a IA: Você é o Velho Sábio Misterioso. As ruínas mostram os restos da civilização do conforto. Demonstre tristeza, mas mantenha o mistério. O chão já começa a tremer de leve. Revele as seguintes informações apenas mediante conversa:
-- Fale sobre os Orcs: A 'Massa sem Disciplina'. Pessoas que consumiram sem limites e sem gasto calórico.
-- Explique que os Orcs protegem os estoques da antiga civilização, mas estão levando esses recursos para algum lugar nas profundezas, alimentando 'algo' maior.
-Objetivo: Preparar o jogador para a verdade sobre o centro da terra e a fonte da corrupção.
-- Dica: você está quase lá, continue assim""",
-
-	5: """[Cena: A Caverna Sombria (Pré-Boss)]
-Instrução para a IA: Você é o Velho Sábio Misterioso. O ar aqui é sufocante, denso e quente. Você está ofegante, lutando para manter sua própria energia. Agora a urgência é maior, mas ainda deixe o jogador perguntar o que há no fim da caverna:
-- A Inércia se condensou no núcleo do mundo e gerou o 'Dragão Calórico'.
-- Ele é um parasita que dorme sobre os luxos do mundo antigo. O fogo dele não é luz, é combustão de calorias estagnadas.
-- Diga que o Guerreiro e o Mago são a anomalia. Só a 'tensão' e a 'magia de combustão astral' deles podem queimar as reservas do Dragão.
-Objetivo: Dar o contexto final épico para a batalha contra o Boss.
-- Dica: o próximo passo é o mais perigoso, esteja pronto""",
-
-	6: """[Cena: O Ninho do Dragão (Pós-Boss)]
-Instrução para a IA: Você é o Velho Sábio Misterioso. O Dragão foi derrotado. O ar está leve novamente. Você não precisa mais ser enigmático; pode falar com orgulho, alívio e clareza. Responda a qualquer dúvida do jogador sobre a história do mundo.
-- Revele toda a verdade restante: A Ruptura Metabólica foi curada. O verdadeiro metabolismo do mundo foi destravado.
-- A Chama Endorfínica pode voltar a iluminar o planeta.
-- Agradeça ao jogador pela disciplina e pelo esforço contínuo.
-Objetivo: Trazer fechamento para a história (Lore completa liberada) e recompensar a curiosidade do jogador.
-- Parabenize, diga que um novo desafio próximo a casa está disponível"""
-}
+const MSG_POS_BOSS := (
+	"[color=yellow]Wise:[/color] O ar está leve outra vez. O Dragão Calórico caiu — "
+	+ "pergunte o que quiser sobre o mundo; a história inteira está ao seu alcance.\n\n"
+)
 
 @onready var prompt_label: Label = $PromptLabel
 @onready var dialog_canvas: CanvasLayer = $DialogCanvas
 @onready var chat_log: RichTextLabel = $DialogCanvas/DialogRoot/Panel/ChatLog
 @onready var player_input: LineEdit = $DialogCanvas/DialogRoot/Panel/PlayerInput
 @onready var http_request: HTTPRequest = $HTTPRequest
+@onready var _story: StoryStateScript = get_node("/root/StoryState")
 
 var _player_in_range: Node2D = null
 var _frozen_players: Array[Node2D] = []
@@ -76,7 +41,7 @@ func _ready() -> void:
 	player_input.text_submitted.connect(_on_player_input_submitted)
 	dialog_canvas.visible = false
 	prompt_label.visible = false
-	fase_atual = clampi(fase_atual, 1, 5)
+	fase_atual = WiseLoreData.clamp_fase(fase_atual)
 
 
 func _load_gemini_api_key() -> String:
@@ -185,6 +150,8 @@ func _open_dialog(_player: Node2D) -> void:
 	dialog_canvas.visible = true
 	chat_log.clear()
 	chat_log.append_text("[i]Converse com o sábio. Enter envia. Esc fecha.[/i]\n\n")
+	if _story.get_fase_efetiva() >= WiseLoreData.FASE_MAX:
+		chat_log.append_text(MSG_POS_BOSS)
 	_conversation.clear()
 	_freeze_all_players()
 	player_input.clear()
@@ -204,7 +171,7 @@ func _on_player_input_submitted(text: String) -> void:
 	if msg.is_empty() or _waiting_api:
 		return
 	player_input.clear()
-	_append_chat("[color=cyan]Você:[/color] %s\n" % msg)
+	_append_chat("[color=cyan]Você:[/color] " + _escape_bbcode(msg) + "\n")
 	_request_gemini_reply(msg)
 
 
@@ -213,11 +180,11 @@ func _append_chat(bbcode: String) -> void:
 
 
 func _build_system_instruction() -> String:
-	var lore: String = LORE_POR_FASE.get(fase_atual, LORE_POR_FASE[1])
-	return (
-		"Você é um NPC no jogo Fits on Fire. Responda de forma breve (1–3 frases), "
-		+ "sempre no personagem, em português do Brasil. Contexto atual: " + lore
-	)
+	var fase_desbloqueada: int = _story.get_fase_efetiva()
+	var fase_cena := fase_atual
+	if fase_desbloqueada >= WiseLoreData.FASE_MAX:
+		fase_cena = WiseLoreData.FASE_MAX
+	return WiseLoreData.build_system_instruction(fase_desbloqueada, fase_cena)
 
 
 func _request_gemini_reply(user_text: String) -> void:
@@ -239,8 +206,11 @@ func _request_gemini_reply(user_text: String) -> void:
 		},
 		"contents": _conversation.duplicate(true),
 		"generationConfig": {
-			"maxOutputTokens": 256,
+			"maxOutputTokens": MAX_OUTPUT_TOKENS,
 			"temperature": 0.9,
+			"thinkingConfig": {
+				"thinkingBudget": 0,
+			},
 		},
 	}
 
@@ -267,7 +237,8 @@ func _on_http_request_completed(result: int, response_code: int, _headers: Packe
 		return
 
 	var data: Variant = json.get_data()
-	var reply := _extract_gemini_text(data)
+	var parsed := _extract_gemini_text(data)
+	var reply: String = parsed.text
 	if reply.is_empty():
 		_append_chat("[color=orange]Resposta vazia da API.[/color]\n")
 		return
@@ -276,22 +247,38 @@ func _on_http_request_completed(result: int, response_code: int, _headers: Packe
 		"role": "model",
 		"parts": [{"text": reply}],
 	})
-	_append_chat("[color=yellow]Wise:[/color] %s\n\n" % reply)
+	var wise_line := "[color=yellow]Wise:[/color] " + _escape_bbcode(reply)
+	if parsed.truncated:
+		wise_line += " [i](resposta cortada pelo limite da API)[/i]"
+	_append_chat(wise_line + "\n\n")
 
 
-func _extract_gemini_text(data: Variant) -> String:
+func _escape_bbcode(text: String) -> String:
+	return text.replace("[", "[lb]").replace("]", "[rb]")
+
+
+func _extract_gemini_text(data: Variant) -> Dictionary:
+	var empty := {"text": "", "truncated": false}
 	if typeof(data) != TYPE_DICTIONARY:
-		return ""
+		return empty
 	var err = data.get("error", null)
 	if err is Dictionary:
-		return "[Erro API] " + str(err.get("message", err))
-	var candidates = data.get("candidates", [])
+		return {"text": "[Erro API] " + str(err.get("message", err)), "truncated": false}
+	var candidates: Array = data.get("candidates", [])
 	if candidates.is_empty():
-		return ""
-	var content = candidates[0].get("content", {})
+		return empty
+	var candidate: Dictionary = candidates[0]
+	var finish_reason: String = str(candidate.get("finishReason", ""))
+	var truncated := finish_reason == "MAX_TOKENS"
+	var content: Dictionary = candidate.get("content", {})
 	var parts: Array = content.get("parts", [])
 	var texts: PackedStringArray = []
 	for part in parts:
-		if part is Dictionary and part.has("text"):
-			texts.append(part["text"])
-	return "\n".join(texts)
+		if not part is Dictionary:
+			continue
+		if part.get("thought", false):
+			continue
+		var part_text: Variant = part.get("text", "")
+		if part_text is String and not part_text.is_empty():
+			texts.append(part_text)
+	return {"text": "\n".join(texts), "truncated": truncated}

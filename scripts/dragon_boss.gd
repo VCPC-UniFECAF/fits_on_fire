@@ -1,6 +1,9 @@
 extends Node2D
 
+const StoryStateScript = preload("res://scripts/story_state.gd")
+
 signal health_changed(current: int, maximum: int)
+signal died
 
 enum BossState { IDLE, WINDUP, ACTIVE, RECOVER }
 enum AttackType { CLAW, TAIL, WING, FIRE }
@@ -273,6 +276,10 @@ func _die() -> void:
 	if _is_dead:
 		return
 	_is_dead = true
+	var story := get_node("/root/StoryState") as StoryStateScript
+	if story:
+		story.registrar_dragao_derrotado()
+	died.emit()
 	health_changed.emit(0, max_health)
 	_disable_all_hitboxes()
 	if sprite:
