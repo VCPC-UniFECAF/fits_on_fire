@@ -32,7 +32,3 @@ func _on_wizard_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	_show_main_menu()
-
-
-func _on_quit_pressed() -> void:
-	get_tree().quit()
