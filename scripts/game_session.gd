@@ -4,6 +4,7 @@ enum Mode { SINGLE, MULTI }
 enum Character { WARRIOR, WIZARD }
 
 const HOUSE_SCENE := "res://scenes/house.tscn"
+const MENU_SCENE := "res://scenes/menu.tscn"
 
 const LEVEL_SCENES: Array[String] = [
 	"res://scenes/house.tscn",
@@ -35,6 +36,12 @@ func start_multiplayer() -> void:
 	mode = Mode.MULTI
 	StoryState.reset_for_new_game()
 	get_tree().change_scene_to_file(HOUSE_SCENE)
+
+
+func return_to_menu() -> void:
+	StoryState.reset_for_new_game()
+	PortalTravel.clear_travel()
+	get_tree().change_scene_to_file(MENU_SCENE)
 
 
 func _on_scene_changed() -> void:

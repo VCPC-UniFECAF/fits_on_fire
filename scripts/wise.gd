@@ -38,6 +38,7 @@ var _conversation: Array = []
 
 
 func _ready() -> void:
+	add_to_group("wise")
 	_api_key = _load_gemini_api_key()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -49,6 +50,10 @@ func _ready() -> void:
 	_apply_unlock_state()
 	if bloqueado_ate_dragao_derrotado and not _is_unlocked():
 		_connect_boss_died()
+
+
+func is_dialog_open() -> bool:
+	return _dialog_open
 
 
 func _connect_boss_died() -> void:
