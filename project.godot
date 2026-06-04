@@ -21,6 +21,7 @@ SceneCycle="*res://scripts/scene_cycle.gd"
 StoryState="*res://scripts/story_state.gd"
 PortalTravel="*res://scripts/portal_travel.gd"
 GameSession="*res://scripts/game_session.gd"
+PlayerLives="*res://scripts/player_lives.gd"
 PauseManager="*res://scripts/pause_manager.gd"
 
 [display]

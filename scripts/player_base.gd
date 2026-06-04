@@ -4,6 +4,7 @@ class_name PlayerBase
 enum State { IDLE, MOVE, ATTACK_LIGHT, ATTACK_HEAVY, HIT, DEAD }
 
 signal health_changed(current: int, maximum: int)
+signal died
 
 @export var player_id: int = 0
 @export var max_health: int = 100
@@ -143,7 +144,6 @@ func get_scaled_damage(base_damage: int) -> int:
 	return maxi(1, roundi(base_damage * attack_multiplier))
 
 
-
 func _end_attack() -> void:
 	state = State.IDLE if direction == Vector2.ZERO else State.MOVE
 
@@ -203,15 +203,20 @@ func _get_hit_recovery() -> void:
 		state = State.IDLE
 
 
-func die() -> void:
+func die(consume_life: bool = true) -> void:
 	if state == State.DEAD:
 		return
 	state = State.DEAD
 	velocity = Vector2.ZERO
+	health = 0
+	health_changed.emit(health, max_health)
 	if sprite and sprite.sprite_frames.has_animation("death"):
 		sprite.play("death")
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
+	died.emit()
+	if consume_life:
+		PlayerLives.handle_player_death(self)
 
 
 func is_alive() -> bool:
