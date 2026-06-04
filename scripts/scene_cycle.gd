@@ -7,6 +7,7 @@ const SCENE_ORDER: Array[String] = [
 	"res://scenes/ruins.tscn",
 	"res://scenes/cave.tscn",
 	"res://scenes/dragons_nest.tscn",
+	"res://scenes/extralevel.tscn",
 ]
 
 var _changing: bool = false
@@ -27,10 +28,10 @@ func _input(event: InputEvent) -> void:
 	if scene and scene.scene_file_path == "res://scenes/menu.tscn":
 		return
 	get_viewport().set_input_as_handled()
-	_go_to_next_scene()
+	jump_scene()
 
 
-func _go_to_next_scene() -> void:
+func jump_scene() -> void:
 	var current_path := ""
 	var scene := get_tree().current_scene
 	if scene and not scene.scene_file_path.is_empty():
