@@ -19,6 +19,7 @@ signal all_waves_completed
 @export var one_shot: bool = true
 
 var _resolved_points: Array[SpawnPoint] = []
+var _rotation_points: Array[SpawnPoint] = []
 var _spawned: Array[Node] = []
 var _point_index: int = 0
 var _running: bool = false
@@ -53,11 +54,13 @@ func _resolve_spawn_points() -> void:
 		for point in spawn_points:
 			if point != null and is_instance_valid(point):
 				_resolved_points.append(point)
+		_build_rotation_points()
 		return
 	if not auto_collect_spawn_points:
 		return
 	_resolved_points.append_array(_find_spawn_point_children(self))
 	if not _resolved_points.is_empty():
+		_build_rotation_points()
 		return
 	var scene_root := get_parent()
 	if scene_root == null:
@@ -65,6 +68,14 @@ func _resolve_spawn_points() -> void:
 	for node in get_tree().get_nodes_in_group("spawn_point"):
 		if node is SpawnPoint and node.get_parent() == scene_root:
 			_resolved_points.append(node)
+	_build_rotation_points()
+
+
+func _build_rotation_points() -> void:
+	_rotation_points.clear()
+	for point in _resolved_points:
+		if not point.exclude_from_rotation:
+			_rotation_points.append(point)
 
 
 func _find_spawn_point_children(node: Node) -> Array[SpawnPoint]:
@@ -81,7 +92,10 @@ func _get_spawn_parent() -> Node:
 
 
 func _get_next_spawn_point() -> SpawnPoint:
-	var point := _resolved_points[_point_index % _resolved_points.size()]
+	if _rotation_points.is_empty():
+		push_error("EnemySpawner: nenhum SpawnPoint disponível para rotação.")
+		return _resolved_points[0]
+	var point := _rotation_points[_point_index % _rotation_points.size()]
 	_point_index += 1
 	return point
 
@@ -93,6 +107,8 @@ func _get_spawn_point_for_entry(entry: WaveSpawnEntry) -> SpawnPoint:
 
 
 func _resolve_scene(point: SpawnPoint, entry: WaveSpawnEntry) -> PackedScene:
+	if entry.spawn_point_index >= 0 and entry.enemy_scene != null:
+		return entry.enemy_scene
 	if point.enemy_scene_override != null:
 		return point.enemy_scene_override
 	return entry.enemy_scene

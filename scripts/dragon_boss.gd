@@ -21,6 +21,7 @@ enum AttackType { CLAW, TAIL, WING, FIRE }
 @export var fire_damage: int = 35
 
 var health: int
+var is_alive: bool = true
 var boss_state: BossState = BossState.IDLE
 var _state_timer: float = 0.0
 var _attack_cooldowns: Dictionary = {
@@ -276,6 +277,7 @@ func _die() -> void:
 	if _is_dead:
 		return
 	_is_dead = true
+	is_alive = false
 	var story := get_node("/root/StoryState") as StoryStateScript
 	if story:
 		story.registrar_dragao_derrotado()
