@@ -29,17 +29,20 @@ func start_single_player(character: Character) -> void:
 	mode = Mode.SINGLE
 	single_character = character
 	StoryState.reset_for_new_game()
+	PlayerLives.reset_for_new_game()
 	get_tree().change_scene_to_file(HOUSE_SCENE)
 
 
 func start_multiplayer() -> void:
 	mode = Mode.MULTI
 	StoryState.reset_for_new_game()
+	PlayerLives.reset_for_new_game()
 	get_tree().change_scene_to_file(HOUSE_SCENE)
 
 
 func return_to_menu() -> void:
 	StoryState.reset_for_new_game()
+	PlayerLives.reset_for_new_game()
 	PortalTravel.clear_travel()
 	get_tree().change_scene_to_file(MENU_SCENE)
 
@@ -79,6 +82,8 @@ func apply_to_current_scene() -> void:
 			wizard.player_id = 1
 			_configure_hud(scene, true)
 
+	_apply_player_lives(scene)
+
 
 func _configure_hud(scene: Node, multiplayer_enabled: bool) -> void:
 	var hud := scene.get_node_or_null("HUD")
@@ -86,3 +91,13 @@ func _configure_hud(scene: Node, multiplayer_enabled: bool) -> void:
 		hud.set_multiplayer_hud(multiplayer_enabled)
 	if hud and hud.has_method("refresh_players"):
 		hud.call_deferred("refresh_players")
+
+
+func _apply_player_lives(scene: Node) -> void:
+	for node in get_tree().get_nodes_in_group("player"):
+		if node is PlayerBase:
+			PlayerLives.apply_to_player(node as PlayerBase)
+
+	var hud := scene.get_node_or_null("HUD")
+	if hud and hud.has_method("refresh_lives_display"):
+		hud.refresh_lives_display()

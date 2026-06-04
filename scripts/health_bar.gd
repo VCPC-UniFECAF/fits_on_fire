@@ -16,10 +16,12 @@ const TWEEN_DURATION := 0.25
 @onready var bar_background: ColorRect = $BarBackground
 @onready var bar_fill: ColorRect = $BarBackground/BarFill
 @onready var label_percent: Label = $LabelPercent
+@onready var _hearts: Array[Sprite2D] = [$Heart, $Heart2, $Heart3]
 
 var _display_ratio: float = 1.0
 var _tween: Tween
 var _bound_player: PlayerBase
+var _player_id: int = 0
 
 
 func _ready() -> void:
@@ -28,10 +30,25 @@ func _ready() -> void:
 	bar_background.size = Vector2(bar_width, bar_height)
 	bar_background.color = COLOR_BORDER
 	_apply_fill_width(_display_ratio)
+	if not PlayerLives.lives_changed.is_connected(_on_lives_changed):
+		PlayerLives.lives_changed.connect(_on_lives_changed)
 
 
 func set_player_label(text: String) -> void:
 	label_player.text = text
+
+
+func setup_lives(player_id: int) -> void:
+	_player_id = player_id
+	set_lives_display(PlayerLives.get_lives(player_id), PlayerLives.get_max_lives())
+
+
+func set_lives_display(remaining: int, max_lives: int) -> void:
+	for i in _hearts.size():
+		if i >= max_lives:
+			_hearts[i].visible = false
+		else:
+			_hearts[i].visible = i < remaining
 
 
 func bind_player(player: PlayerBase) -> void:
@@ -85,3 +102,8 @@ func _get_fill_color(ratio: float) -> Color:
 	if ratio < CRITICAL_THRESHOLD:
 		return COLOR_FILL_CRITICAL.lerp(COLOR_FILL_HEALTHY, ratio / CRITICAL_THRESHOLD)
 	return COLOR_FILL_HEALTHY
+
+
+func _on_lives_changed(player_id: int, remaining: int, max_lives: int) -> void:
+	if player_id == _player_id:
+		set_lives_display(remaining, max_lives)

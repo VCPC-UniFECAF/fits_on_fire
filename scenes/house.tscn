@@ -1,12 +1,11 @@
 [gd_scene format=4 uid="uid://cwxoxvf0nnqla"]
 
-[ext_resource type="Script" uid="uid://yb7f6ngifhq1" path="res://scripts/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" uid="uid://cn1mwa8ffbryc" path="res://sprites/scenerios/house/house 1.png" id="1_ptc3g"]
-[ext_resource type="Script" uid="uid://p3sh0bq5of70" path="res://scripts/health_bar.gd" id="2_hbar"]
 [ext_resource type="Texture2D" uid="uid://cqaw707p411a3" path="res://sprites/scenerios/house/house_.png" id="2_wcu0q"]
 [ext_resource type="Script" uid="uid://bctc33khs3b6u" path="res://scripts/camera_follow.gd" id="3_cam"]
 [ext_resource type="PackedScene" uid="uid://cmppiquxqyap6" path="res://prefabs/player_warrior.tscn" id="4_war"]
 [ext_resource type="PackedScene" uid="uid://c73ekur8losib" path="res://prefabs/player_wizard.tscn" id="5_wiz"]
+[ext_resource type="PackedScene" uid="uid://6tp6wnw0y2by" path="res://prefabs/hud.tscn" id="6_hud"]
 [ext_resource type="PackedScene" uid="uid://ctee5g4e8kjf2" path="res://prefabs/portal.tscn" id="9_bwc8c"]
 [ext_resource type="PackedScene" uid="uid://csw6pmwos7ma2" path="res://prefabs/wise.tscn" id="9_wise"]
 
@@ -1197,117 +1196,8 @@ position = Vector2(-15.588226, 0)
 scale = Vector2(1.0588236, 1)
 polygon = PackedVector2Array(248, 39, 247.99998, 64, 265, 64, 265, 39)
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=282146135]
+[node name="HUD" parent="." unique_id=282146135 instance=ExtResource("6_hud")]
 visible = false
-script = ExtResource("1_hud")
-
-[node name="lifeplayer1" type="Control" parent="HUD" unique_id=257287894]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 837.0
-offset_top = 5.0
-offset_right = 957.0
-offset_bottom = 15.0
-mouse_filter = 2
-script = ExtResource("2_hbar")
-
-[node name="LabelPlayer" type="Label" parent="HUD/lifeplayer1" unique_id=798463964]
-layout_mode = 0
-offset_left = 7.0
-offset_top = -2.0
-offset_right = 23.0
-offset_bottom = 10.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
-text = "P1"
-vertical_alignment = 1
-
-[node name="BarBackground" type="ColorRect" parent="HUD/lifeplayer1" unique_id=1200008400]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 2.0
-offset_right = 66.0
-offset_bottom = 8.0
-mouse_filter = 2
-color = Color(0.23921569, 0.15686275, 0.09019608, 1)
-
-[node name="BarFill" type="ColorRect" parent="HUD/lifeplayer1/BarBackground" unique_id=1302759444]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 47.0
-offset_bottom = 5.0
-mouse_filter = 2
-color = Color(0.41960785, 0.7490196, 0.34901962, 1)
-
-[node name="LabelPercent" type="Label" parent="HUD/lifeplayer1" unique_id=470190367]
-layout_mode = 0
-offset_left = 68.0
-offset_top = -1.0
-offset_right = 118.0
-offset_bottom = 11.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
-text = "100%"
-vertical_alignment = 1
-
-[node name="lifeplayer2" type="Control" parent="HUD" unique_id=764570257]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 837.0
-offset_top = 15.0
-offset_right = 957.0
-offset_bottom = 25.0
-mouse_filter = 2
-script = ExtResource("2_hbar")
-
-[node name="LabelPlayer" type="Label" parent="HUD/lifeplayer2" unique_id=907642978]
-layout_mode = 0
-offset_left = 7.0
-offset_top = -2.0
-offset_right = 23.0
-offset_bottom = 10.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
-text = "P2"
-vertical_alignment = 1
-
-[node name="BarBackground" type="ColorRect" parent="HUD/lifeplayer2" unique_id=1724570676]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 2.0
-offset_right = 66.0
-offset_bottom = 8.0
-mouse_filter = 2
-color = Color(0.23921569, 0.15686275, 0.09019608, 1)
-
-[node name="BarFill" type="ColorRect" parent="HUD/lifeplayer2/BarBackground" unique_id=2128964985]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 47.0
-offset_bottom = 5.0
-mouse_filter = 2
-color = Color(0.41960785, 0.7490196, 0.34901962, 1)
-
-[node name="LabelPercent" type="Label" parent="HUD/lifeplayer2" unique_id=1629604089]
-layout_mode = 0
-offset_left = 68.0
-offset_top = -1.0
-offset_right = 118.0
-offset_bottom = 11.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 8
-text = "100%"
-vertical_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=619162892]
 position = Vector2(156, 85)
