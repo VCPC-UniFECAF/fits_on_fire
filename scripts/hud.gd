@@ -8,6 +8,14 @@ func _ready() -> void:
 	call_deferred("_bind_players")
 
 
+func set_multiplayer_hud(enabled: bool) -> void:
+	_bar_p2.visible = enabled
+
+
+func refresh_players() -> void:
+	_bind_players()
+
+
 func _bind_players() -> void:
 	if not is_inside_tree():
 		return
@@ -16,5 +24,5 @@ func _bind_players() -> void:
 			var player := node as PlayerBase
 			if player.player_id == 0:
 				_bar_p1.bind_player(player)
-			elif player.player_id == 1:
+			elif player.player_id == 1 and _bar_p2.visible:
 				_bar_p2.bind_player(player)

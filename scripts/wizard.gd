@@ -18,6 +18,26 @@ func _ready() -> void:
 	heavy_cooldown = heavy_cooldown_override
 
 
+func _uses_mouse_attacks() -> bool:
+	var session := get_node_or_null("/root/GameSession")
+	if session == null:
+		return false
+	return (
+		session.mode == session.Mode.SINGLE
+		and session.single_character == session.Character.WIZARD
+	)
+
+
+func _process_attack_input() -> void:
+	if _uses_mouse_attacks():
+		if Input.is_action_just_pressed("p2_light"):
+			_start_light_attack()
+		elif Input.is_action_just_pressed("p2_heavy") and heavy_cooldown_timer <= 0.0:
+			_start_heavy_attack()
+		return
+	super._process_attack_input()
+
+
 func _get_light_attack_duration() -> float:
 	return light_projectile_interval * light_projectile_count + 0.1
 

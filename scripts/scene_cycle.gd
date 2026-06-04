@@ -23,6 +23,9 @@ func _on_scene_changed() -> void:
 func _input(event: InputEvent) -> void:
 	if _changing or not event.is_action_pressed("cycle_scene"):
 		return
+	var scene := get_tree().current_scene
+	if scene and scene.scene_file_path == "res://scenes/menu.tscn":
+		return
 	get_viewport().set_input_as_handled()
 	_go_to_next_scene()
 
