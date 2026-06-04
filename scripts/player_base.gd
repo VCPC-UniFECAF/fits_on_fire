@@ -219,6 +219,22 @@ func die(consume_life: bool = true) -> void:
 		PlayerLives.handle_player_death(self)
 
 
+func revive(near_position: Vector2) -> void:
+	if state != State.DEAD:
+		return
+	global_position = near_position
+	health = max_health
+	state = State.IDLE
+	can_be_hit = true
+	velocity = Vector2.ZERO
+	_knockback_timer = 0.0
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(1, true)
+	health_changed.emit(health, max_health)
+	if sprite and sprite.sprite_frames.has_animation("idle"):
+		sprite.play("idle")
+
+
 func is_alive() -> bool:
 	return state != State.DEAD and health > 0
 

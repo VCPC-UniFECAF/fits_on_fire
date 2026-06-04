@@ -1456,6 +1456,9 @@ sources/0 = SubResource("TileSetAtlasSource_mqdvn")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7msn7"]
 size = Vector2(24, 26)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljiug"]
+size = Vector2(46, 42)
+
 [node name="woods" type="Node2D" unique_id=2144677870]
 
 [node name="TileMapLayer_floor" type="TileMapLayer" parent="." unique_id=567181031]
@@ -1571,3 +1574,21 @@ position = Vector2(-10, 35)
 
 [node name="PlayerSpawn1" type="Marker2D" parent="portal4" unique_id=453877471]
 position = Vector2(16, 35)
+
+[node name="portal5" type="Area2D" parent="." unique_id=1269372589]
+position = Vector2(-152, 252)
+collision_layer = 0
+script = ExtResource("11_24k67")
+next_level_path = "uid://bt4dibjt26pf2"
+portal_id = "woods_to_extra"
+destination_portal_id = "extra_to_woods"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="portal5" unique_id=854787818]
+position = Vector2(0, 20)
+shape = SubResource("RectangleShape2D_ljiug")
+
+[node name="PlayerSpawn0" type="Marker2D" parent="portal5" unique_id=717550146]
+position = Vector2(-13, -17)
+
+[node name="PlayerSpawn1" type="Marker2D" parent="portal5" unique_id=1822846501]
+position = Vector2(12, -17)

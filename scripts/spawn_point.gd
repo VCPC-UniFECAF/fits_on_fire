@@ -2,6 +2,8 @@ class_name SpawnPoint
 extends Marker2D
 
 @export var enemy_scene_override: PackedScene
+## Quando true, este ponto só é usado via spawn_point_index fixo (ex.: boss).
+@export var exclude_from_rotation: bool = false
 
 
 func _ready() -> void:
