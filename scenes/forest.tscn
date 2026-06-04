@@ -1533,10 +1533,10 @@ position = Vector2(263, 102)
 fase_atual = 3
 
 [node name="PlayerWarrior" parent="." unique_id=592370139 instance=ExtResource("2_xr56k")]
-position = Vector2(-96, 185)
+position = Vector2(-93, 167)
 
 [node name="PlayerWizard" parent="." unique_id=1739035420 instance=ExtResource("3_sek5r")]
-position = Vector2(-92, 214)
+position = Vector2(-84, 224)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=892117870]
 position = Vector2(156, 85)

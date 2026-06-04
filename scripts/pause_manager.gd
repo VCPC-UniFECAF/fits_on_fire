@@ -38,6 +38,8 @@ func pause() -> void:
 	_paused = true
 	get_tree().paused = true
 	_pause_ui.show()
+	if _pause_ui.has_method("focus_default"):
+		_pause_ui.call_deferred("focus_default")
 
 
 func resume() -> void:

@@ -32,8 +32,13 @@ func _process_attack_input() -> void:
 	if _uses_mouse_attacks():
 		if Input.is_action_just_pressed("p2_light"):
 			_start_light_attack()
-		elif Input.is_action_just_pressed("p2_heavy") and heavy_cooldown_timer <= 0.0:
+			return
+		if Input.is_action_just_pressed("p2_heavy") and heavy_cooldown_timer <= 0.0:
 			_start_heavy_attack()
+			return
+		# p2_* usa joypad device 1; em single o mago é player_id 0 (p1_* / device 0).
+		if not Input.get_connected_joypads().is_empty():
+			super._process_attack_input()
 		return
 	super._process_attack_input()
 

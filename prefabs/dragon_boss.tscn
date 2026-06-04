@@ -376,8 +376,6 @@ autoplay = "idle"
 position = Vector2(421, -1)
 sprite_frames = SubResource("SpriteFrames_kg45p")
 animation = &"claw"
-frame = 4
-frame_progress = 0.42222247
 
 [node name="Hurtbox" type="Area2D" parent="FacingPivot" unique_id=21771569]
 collision_layer = 2
