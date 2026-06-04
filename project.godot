@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="fits_on_fire"
-run/main_scene="uid://cwxoxvf0nnqla"
+run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 SceneCycle="*res://scripts/scene_cycle.gd"
 StoryState="*res://scripts/story_state.gd"
 PortalTravel="*res://scripts/portal_travel.gd"
+GameSession="*res://scripts/game_session.gd"
 
 [display]
 

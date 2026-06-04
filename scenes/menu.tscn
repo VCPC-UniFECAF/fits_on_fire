@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=3 uid="uid://16dq5xfijlri"]
+
+[ext_resource type="Script" path="res://scripts/menu.gd" id="1_menu"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.12, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="CenterContainer/MainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Fits on Fire"
+horizontal_alignment = 1
+
+[node name="SinglePlayer" type="Button" parent="CenterContainer/MainMenu"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "SinglePlayer"
+
+[node name="Multiplayer" type="Button" parent="CenterContainer/MainMenu"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Multiplayer"
+
+[node name="Quit" type="Button" parent="CenterContainer/MainMenu"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Sair"
+
+[node name="CharacterSelect" type="VBoxContainer" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="CenterContainer/CharacterSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Escolha seu personagem"
+horizontal_alignment = 1
+
+[node name="Warrior" type="Button" parent="CenterContainer/CharacterSelect"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Guerreiro"
+
+[node name="Wizard" type="Button" parent="CenterContainer/CharacterSelect"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Mago"
+
+[node name="Back" type="Button" parent="CenterContainer/CharacterSelect"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Voltar"
+
+[connection signal="pressed" from="CenterContainer/MainMenu/SinglePlayer" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="CenterContainer/MainMenu/Multiplayer" to="." method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="CenterContainer/MainMenu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="CenterContainer/CharacterSelect/Warrior" to="." method="_on_warrior_pressed"]
+[connection signal="pressed" from="CenterContainer/CharacterSelect/Wizard" to="." method="_on_wizard_pressed"]
+[connection signal="pressed" from="CenterContainer/CharacterSelect/Back" to="." method="_on_back_pressed"]

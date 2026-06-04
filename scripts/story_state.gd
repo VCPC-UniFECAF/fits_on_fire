@@ -88,3 +88,12 @@ func collect_power_up(scene_path: String, factor: float = 1.25) -> bool:
 	_power_up_scenes_collected[nome] = true
 	attack_power_multiplier *= factor
 	return true
+
+
+func reset_for_new_game() -> void:
+	fase_narrativa_max = 1
+	dragao_derrotado = false
+	cave_key_collected = false
+	cave_gate_unlocked = false
+	attack_power_multiplier = 1.0
+	_power_up_scenes_collected.clear()
