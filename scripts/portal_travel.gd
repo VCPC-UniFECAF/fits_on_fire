@@ -68,5 +68,9 @@ func _find_portal_by_id(id: String) -> Node:
 	return null
 
 
+func clear_travel() -> void:
+	_clear_travel()
+
+
 func _clear_travel() -> void:
 	_arrival_portal_id = ""
