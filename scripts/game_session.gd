@@ -13,6 +13,7 @@ const LEVEL_SCENES: Array[String] = [
 	"res://scenes/ruins.tscn",
 	"res://scenes/cave.tscn",
 	"res://scenes/dragons_nest.tscn",
+	"res://scenes/extralevel.tscn",
 ]
 
 var mode: Mode = Mode.MULTI
